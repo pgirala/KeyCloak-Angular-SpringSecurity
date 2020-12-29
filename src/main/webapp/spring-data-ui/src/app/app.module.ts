@@ -13,6 +13,8 @@ import {TokenInterceptor} from "./interceptors/token-interceptor";
 import {KeycloakService} from "./keycloak/keycloak.service";
 import {LogoutComponent} from "./logout/logout.component";
 
+import { FormioModule } from 'angular-formio';
+
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
 }
@@ -29,7 +31,8 @@ export function kcFactory(keycloakService: KeycloakService) {
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    FormioModule
   ],
   providers: [KeycloakService,
     {

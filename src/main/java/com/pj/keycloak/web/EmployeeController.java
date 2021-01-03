@@ -53,7 +53,7 @@ public class EmployeeController
     {
         employee.setEmployeeId((long) new Random().nextInt(999999));
         employee.setUserGuid(generateString());
-        employeeService.saveAndFlush(employee);
+        employeeService.saveAndFlush(employee, userInfoUtil);
 
         return employeeService.findAll();
     }
@@ -61,7 +61,7 @@ public class EmployeeController
     @DeleteMapping(path = "/delete/{id}")
     public void deleteEmployee(@PathVariable Long id)
     {
-        employeeService.deleteById(id);
+        employeeService.deleteById(id, userInforUtil);
     }
 
     private String generateString()

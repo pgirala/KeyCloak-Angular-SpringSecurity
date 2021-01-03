@@ -38,4 +38,8 @@ public class UserInfoUtil
         KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) authentication.getPrincipal();
         return keycloakPrincipal.getKeycloakSecurityContext().getToken();
     }
+
+    public String getAuthority() {
+        return this.getAccessToken().getEmail();
+    }
 }

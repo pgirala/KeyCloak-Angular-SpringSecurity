@@ -2,6 +2,8 @@ package com.pj.keycloak.service;
 
 import com.pj.keycloak.model.Employee;
 
+import com.pj.keycloak.util.UserInfoUtil;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,8 +22,8 @@ public interface EmployeeService
     @PreAuthorize("hasPermission(#employee, 'WRITE')")
     Employee updateProfile(Employee employee);
 
-    void saveAndFlush(Employee employee);
+    void saveAndFlush(Employee employee, UserInfoUtil userInfoUtil);
 
     @PreAuthorize("hasPermission(#id,'com.pj.keycloak.model.Employee', 'DELETE')")
-    void deleteById(Long id);
+    void deleteById(Long id, UserInfoUtil userInfoUtil);
 }

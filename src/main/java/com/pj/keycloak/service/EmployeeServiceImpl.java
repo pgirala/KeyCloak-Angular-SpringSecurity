@@ -7,9 +7,12 @@ import com.pj.keycloak.repo.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
+import org.springframework.security.acls.model.Acl;
 import org.springframework.security.acls.model.MutableAcl;
 import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
@@ -64,13 +67,10 @@ public class EmployeeServiceImpl implements EmployeeService
     }
 
     @Override
-    public void deleteById(Long id, UserInfoUtil userInfoUtil)
+    public void deleteById(Long id)
     {
         employeeRepository.deleteById(id);
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(Employee.class.getName(), id);
-        List<ObjectIdentity> objectIdentityList = new List<ObjectIdentity>();
-        objectIdentityList.add(objectIdentity);
-        //MutableAcl mutableAcl = aclService.readAclsById(objectIdentityList);
-        //mutableAcl.deleteAce();
-    }
+        aclService.deleteAcl(objectIdentity, true);
+     }
 }

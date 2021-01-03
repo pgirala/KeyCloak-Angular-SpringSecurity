@@ -25,5 +25,5 @@ public interface EmployeeService
     void saveAndFlush(Employee employee, UserInfoUtil userInfoUtil);
 
     @PreAuthorize("hasPermission(#id,'com.pj.keycloak.model.Employee', 'DELETE')")
-    void deleteById(Long id, UserInfoUtil userInfoUtil);
+    void deleteById(Long id);
 }

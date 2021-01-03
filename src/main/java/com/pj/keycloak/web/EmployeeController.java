@@ -61,7 +61,7 @@ public class EmployeeController
     @DeleteMapping(path = "/delete/{id}")
     public void deleteEmployee(@PathVariable Long id)
     {
-        employeeService.deleteById(id, userInforUtil);
+        employeeService.deleteById(id);
     }
 
     private String generateString()

@@ -18,6 +18,7 @@ import org.springframework.security.acls.model.ObjectIdentity;
 import org.springframework.security.acls.domain.ObjectIdentityImpl;
 import org.springframework.security.acls.domain.BasePermission;
 import org.springframework.security.acls.domain.PrincipalSid;
+import org.springframework.security.acls.domain.GrantedAuthoritySid;
 
 import com.pj.keycloak.util.UserInfoUtil;
 
@@ -58,10 +59,21 @@ public class EmployeeServiceImpl implements EmployeeService
         Employee newEmployee = employeeRepository.saveAndFlush(employee);
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newEmployee.getClass().getName(), employee.getId());
         MutableAcl mutableAcl = aclService.createAcl(objectIdentity);
-		// Now let's add a couple of permissions
-		mutableAcl.insertAce(0, BasePermission.READ, new PrincipalSid(userInfoUtil.getAuthority()), true);
-		mutableAcl.insertAce(1, BasePermission.WRITE, new PrincipalSid(userInfoUtil.getAuthority()), false);
-		mutableAcl.insertAce(2, BasePermission.DELETE, new PrincipalSid(userInfoUtil.getAuthority()), true);
+        // Now let's add a couple of permissions
+        int i = 0;
+		mutableAcl.insertAce(i++, BasePermission.READ, new PrincipalSid(userInfoUtil.getAuthority()), true);
+		mutableAcl.insertAce(i++, BasePermission.WRITE, new PrincipalSid(userInfoUtil.getAuthority()), true);
+        mutableAcl.insertAce(i++, BasePermission.DELETE, new PrincipalSid(userInfoUtil.getAuthority()), true);
+        mutableAcl.insertAce(i++, BasePermission.CREATE, new PrincipalSid(userInfoUtil.getAuthority()), true);       //
+
+        for(String rol : userInfoUtil.getRoles()) {
+            System.out.println(rol);
+            mutableAcl.insertAce(i++, BasePermission.READ, new GrantedAuthoritySid(rol), true);
+            mutableAcl.insertAce(i++, BasePermission.WRITE, new GrantedAuthoritySid(rol), true);
+            mutableAcl.insertAce(i++, BasePermission.DELETE, new GrantedAuthoritySid(rol), true);
+            mutableAcl.insertAce(i++, BasePermission.CREATE, new GrantedAuthoritySid(rol), true);
+       }
+       
 		// Explicitly save the changed ACL
 		aclService.updateAcl(mutableAcl);   
     }

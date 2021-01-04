@@ -10,7 +10,11 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.List;
+import java.util.ArrayList;
 
+import com.pj.keycloak.security.Roles;
+		
 @Component
 public class UserInfoUtil
 {
@@ -41,5 +45,15 @@ public class UserInfoUtil
 
     public String getAuthority() {
         return this.getAccessToken().getEmail();
+    }
+
+    public List<String> getRoles() {
+        List<String>result = new ArrayList<String>();
+
+        for(String rol : this.getAccessToken().getRealmAccess().getRoles())
+            if (Roles.ROL_LIST.contains(rol))
+                result.add(rol);
+
+        return result;
     }
 }

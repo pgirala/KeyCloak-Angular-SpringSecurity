@@ -61,13 +61,8 @@ public class EmployeeServiceImpl implements EmployeeService
         MutableAcl mutableAcl = aclService.createAcl(objectIdentity);
         // Now let's add a couple of permissions
         int i = 0;
-		mutableAcl.insertAce(i++, BasePermission.READ, new PrincipalSid(userInfoUtil.getAuthority()), true);
-		mutableAcl.insertAce(i++, BasePermission.WRITE, new PrincipalSid(userInfoUtil.getAuthority()), true);
-        mutableAcl.insertAce(i++, BasePermission.DELETE, new PrincipalSid(userInfoUtil.getAuthority()), true);
-        mutableAcl.insertAce(i++, BasePermission.CREATE, new PrincipalSid(userInfoUtil.getAuthority()), true);       //
 
         for(String rol : userInfoUtil.getRoles()) {
-            System.out.println(rol);
             mutableAcl.insertAce(i++, BasePermission.READ, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.WRITE, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.DELETE, new GrantedAuthoritySid(rol), true);

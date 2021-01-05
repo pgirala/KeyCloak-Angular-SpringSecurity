@@ -52,12 +52,12 @@ export class EmployeeListComponent implements OnInit
     this.ngxSpinnerService.show();
     let employee=new Employee();
     employee.employeeId=1001;
-    employee.location='Falls Church';
-    employee.salary=200000;
-    employee.email='jdoe@hj.cim';
-    employee.firstName='John';
-    employee.lastName='Doe';
-    employee.phone='202-345-2333';
+    employee.location='(location)';
+    employee.salary=0.0;
+    employee.email='(email)';
+    employee.firstName='(name)';
+    employee.lastName='(surname)';
+    employee.phone='(phone)';
 
 
     this.employeeService.createEmployee('http://localhost:8081/api/v1/employee/create',employee).subscribe(

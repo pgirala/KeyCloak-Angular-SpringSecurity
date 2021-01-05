@@ -1,1 +1,40 @@
-<p>project-list works!</p>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" color="#fff" size="medium" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="container container-fluid">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Location</th>
+      <th scope="col">Budget</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let project of projects">
+    <tr>
+      <td> <a routerLink="/employee/{{project.id}}"  [queryParams]="{editMode: false}">{{project.id}}</a></td>
+      <td>{{project.name}}</td>
+      <td>{{project.location}}</td>
+      <td>{{project.budget}}</td>
+      <td>
+        <button (click)="editProject(project.id)" class="btn btn-primary" style="margin-right: 10px">Edit</button>
+        <button (click)="deleteProject(project.id)" class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br/>
+  <div class="container container-fluid">
+    <h5>
+      <button (click)="createProject()" class="btn btn-primary"> Create</button>
+    </h5>
+  </div>
+
+  <div class="container container-fluid">
+    <h5>
+      <button [routerLink]="['/']" class="btn btn-primary">Back</button>
+    </h5>
+  </div>
+</div>

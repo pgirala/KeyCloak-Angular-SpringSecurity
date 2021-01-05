@@ -32,6 +32,10 @@ public class Employee extends UserProfile implements Serializable
             inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
     private Set<Project> projects=new HashSet<>();
 
+    public static Long getIdClase() {
+        // permitirá aplicar el control sobre la creación de instancias en las ACL
+        return Employee.serialVersionUID;
+    }
 
     @Override
     public boolean equals(Object o)

@@ -22,6 +22,7 @@ public interface EmployeeService
     @PreAuthorize("hasPermission(#employee, 'WRITE')")
     Employee updateProfile(Employee employee);
 
+    @PreAuthorize("hasPermission(#employee, 'CREATE')")
     void saveAndFlush(Employee employee, UserInfoUtil userInfoUtil);
 
     @PreAuthorize("hasPermission(#id,'com.pj.keycloak.model.Employee', 'DELETE')")

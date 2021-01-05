@@ -51,6 +51,7 @@ public class EmployeeController
     @PostMapping(path = "/create")
     public List<Employee> create(@RequestBody Employee employee)
     {
+        employee.setId(Employee.getIdClase()); // para aplicar el permiso CREATE en la ACL
         employee.setEmployeeId((long) new Random().nextInt(999999));
         employee.setUserGuid(generateString());
         employeeService.saveAndFlush(employee, userInfoUtil);

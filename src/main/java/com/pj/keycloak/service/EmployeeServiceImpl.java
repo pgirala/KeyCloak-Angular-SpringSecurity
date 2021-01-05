@@ -56,6 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService
     @Override
     public void saveAndFlush(Employee employee, UserInfoUtil userInfoUtil)
     {
+        employee.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Employee newEmployee = employeeRepository.saveAndFlush(employee);
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newEmployee.getClass().getName(), employee.getId());
         MutableAcl mutableAcl = aclService.createAcl(objectIdentity);
@@ -66,7 +67,6 @@ public class EmployeeServiceImpl implements EmployeeService
             mutableAcl.insertAce(i++, BasePermission.READ, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.WRITE, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.DELETE, new GrantedAuthoritySid(rol), true);
-            mutableAcl.insertAce(i++, BasePermission.CREATE, new GrantedAuthoritySid(rol), true);
        }
        
 		// Explicitly save the changed ACL

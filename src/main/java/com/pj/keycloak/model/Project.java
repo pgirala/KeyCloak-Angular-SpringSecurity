@@ -8,12 +8,13 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
 @Entity
 @Table(name = "project")
 @Data
 public class Project implements Serializable
 {
-    private static final long serialVersionUID = 4568718070806594966L;
+    private static final long serialVersionUID = -2482579485413606057L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

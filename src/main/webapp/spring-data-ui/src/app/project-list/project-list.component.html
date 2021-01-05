@@ -6,6 +6,7 @@
   <table class="table">
     <thead>
     <tr>
+      <th scope="col">Id</th>
       <th scope="col">Name</th>
       <th scope="col">Location</th>
       <th scope="col">Budget</th>
@@ -14,7 +15,7 @@
     </thead>
     <tbody *ngFor="let project of projects">
     <tr>
-      <td> <a routerLink="/employee/{{project.id}}"  [queryParams]="{editMode: false}">{{project.id}}</a></td>
+      <td> <a routerLink="/project/{{project.id}}"  [queryParams]="{editMode: false}">{{project.id}}</a></td>
       <td>{{project.name}}</td>
       <td>{{project.location}}</td>
       <td>{{project.budget}}</td>

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
+import java.util.Objects;
 @Entity
 @Table(name = "project")
 @Data
@@ -31,4 +31,27 @@ public class Project implements Serializable
     @ManyToMany(mappedBy = "projects")
     @JsonIgnore
     private Set<Employee> employees=new HashSet<>();
-}
+
+    public static Long getIdClase() {
+        // permitirá aplicar el control sobre la creación de instancias en las ACL
+        return Project.serialVersionUID;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
+        Project project = (Project) o;
+        return getId().equals(project.getId());
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getId());
+    }}

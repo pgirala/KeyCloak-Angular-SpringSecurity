@@ -14,6 +14,8 @@ import {KeycloakService} from "./keycloak/keycloak.service";
 import {LogoutComponent} from "./logout/logout.component";
 
 import { FormioModule } from 'angular-formio';
+import { ProjectListComponent } from './project-list/project-list.component';
+import { ProjectViewComponent } from './project-view/project-view.component';
 
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
@@ -24,7 +26,9 @@ export function kcFactory(keycloakService: KeycloakService) {
     EmployeeListComponent,
     LogoutComponent,
     EmployeeProjectComponent,
-    EmployeeViewComponent
+    EmployeeViewComponent,
+    ProjectListComponent,
+    ProjectViewComponent
   ],
   imports: [
     BrowserModule,

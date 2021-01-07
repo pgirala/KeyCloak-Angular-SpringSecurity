@@ -17,6 +17,7 @@ import {LogoutComponent} from "./logout/logout.component";
 import { FormioModule } from 'angular-formio';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
+import { ContenidoDirective } from './contenido.directive';
 
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
@@ -29,7 +30,8 @@ export function kcFactory(keycloakService: KeycloakService) {
     EmployeeProjectComponent,
     EmployeeViewComponent,
     ProjectListComponent,
-    ProjectViewComponent
+    ProjectViewComponent,
+    ContenidoDirective
   ],
   imports: [
     BrowserModule,

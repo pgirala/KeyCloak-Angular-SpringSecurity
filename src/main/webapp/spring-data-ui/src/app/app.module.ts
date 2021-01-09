@@ -16,6 +16,7 @@ import {LogoutComponent} from "./logout/logout.component";
 import { FormioModule } from 'angular-formio';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
@@ -35,6 +36,12 @@ export function kcFactory(keycloakService: KeycloakService) {
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
+    OAuthModule.forRoot({
+      resourceServer: {
+          allowedUrls: ['http://localhost:8081/api'],
+          sendAccessToken: true
+      }
+    }),
     NgxSpinnerModule,
     FormioModule
   ],

@@ -6,8 +6,10 @@ server:
 keycloak:
   auth-server-url: http://localhost:8080/auth
   realm: keycloakdemo
-  resource: angular-app
-  public-client: true
+  resource: angular-app-backend
+  bearer-only: true
+  credentials:
+    secret: de7927fe-42a2-4846-9a87-584312796943
   principal-attribute: preferred_username
   enabled: true
 
@@ -35,3 +37,9 @@ spring:
   devtools:
     restart:
       enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

@@ -1,39 +1,30 @@
 package com.pj.keycloak.security;
 
-import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
-import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
-import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
+import java.io.InputStream;
+
+import org.keycloak.adapters.KeycloakConfigResolver;
+import org.keycloak.adapters.KeycloakDeployment;
+import org.keycloak.adapters.KeycloakDeploymentBuilder;
+import org.keycloak.adapters.spi.HttpFacade;
+import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy;
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Collections;
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 
-@Configuration
-@EnableWebSecurity
-@ComponentScan(basePackageClasses = {KeycloakSecurityComponents.class},
-        excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = "org.keycloak.adapters.springsecurity.management.HttpSessionManager"))
+@KeycloakConfiguration
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
 {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder authenticationManagerBuilder)
     {
-        KeycloakAuthenticationProvider keycloakAuthenticationProvider=keycloakAuthenticationProvider();
-        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
-        authenticationManagerBuilder.authenticationProvider(keycloakAuthenticationProvider);
+        authenticationManagerBuilder.authenticationProvider(keycloakAuthenticationProvider());
     }
 
     @Bean
@@ -53,28 +44,44 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception
     {
         super.configure(http);
-
-        http.authorizeRequests()
-                //.antMatchers("/api/**").hasAnyAuthority(Roles.ROLE_ADMIN)
-                .antMatchers("/api/**").permitAll()
-                .anyRequest()
-                .permitAll();
-
-        http.cors();
-        http.csrf().disable();
+        http.logout().logoutSuccessUrl("/home")
+                .and()
+                .authorizeRequests()
+                .antMatchers("/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_GESTOR");
     }
 
-    //Cors filter to accept incoming requests
+    /**
+     * Overrides default keycloak config resolver behaviour (/WEB-INF/keycloak.json) by a simple mechanism.
+     * <p>
+     * This example loads other-keycloak.json when the parameter use.other is set to true, e.g.:
+     * {@code ./gradlew bootRun -Duse.other=true}
+     *
+     * @return keycloak config resolver
+     */
     @Bean
-    CorsConfigurationSource corsConfigurationSource()
-    {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.applyPermitDefaultValues();
-        configuration.setAllowedMethods(Collections.singletonList("*"));
-        configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
+    public KeycloakConfigResolver keycloakConfigResolver() {
+        return new KeycloakConfigResolver() {
+
+            private KeycloakDeployment keycloakDeployment;
+
+            @Override
+            public KeycloakDeployment resolve(HttpFacade.Request facade) {
+                if (keycloakDeployment != null) {
+                    return keycloakDeployment;
+                }
+
+                String path = "/keycloak.json";
+                InputStream configInputStream = getClass().getResourceAsStream(path);
+
+                if (configInputStream == null) {
+                    throw new RuntimeException("Could not load Keycloak deployment info: " + path);
+                } else {
+                    keycloakDeployment = KeycloakDeploymentBuilder.build(configInputStream);
+                }
+
+                return keycloakDeployment;
+            }
+        };
     }
 
 }

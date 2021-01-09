@@ -2,6 +2,10 @@ package com.pj.keycloak.util;
 
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.representations.AccessToken;
+import org.keycloak.AuthorizationContext;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.representations.idm.authorization.Permission;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
@@ -14,7 +18,8 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.pj.keycloak.security.Roles;
-		
+
+
 @Component
 public class UserInfoUtil
 {
@@ -23,11 +28,6 @@ public class UserInfoUtil
     public String getPreferredUsername(HttpServletRequest httpServletRequest)
     {
         AccessToken accessToken=getAccessToken();
-        /*
-
-                KeycloakAuthenticationToken keycloakAuthenticationToken= (KeycloakAuthenticationToken) httpServletRequest.getUserPrincipal();
-                logger.info("Subject: {}",keycloakAuthenticationToken.getAccount().getKeycloakSecurityContext().getToken().getSubject());
-        */
         return accessToken.getPreferredUsername();
     }
     public String getUserGuid()
@@ -35,12 +35,15 @@ public class UserInfoUtil
         return getAccessToken().getSubject();
     }
 
+    private KeycloakSecurityContext getSecurityContext() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) authentication.getPrincipal();
+        return keycloakPrincipal.getKeycloakSecurityContext();
+    }
 
     private AccessToken getAccessToken()
     {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        KeycloakPrincipal keycloakPrincipal= (KeycloakPrincipal) authentication.getPrincipal();
-        return keycloakPrincipal.getKeycloakSecurityContext().getToken();
+        return this.getSecurityContext().getToken();
     }
 
     public String getAuthority() {
@@ -55,5 +58,35 @@ public class UserInfoUtil
                 result.add(rol);
 
         return result;
+    }
+
+    /**
+     * An example on how you can use the {@link AuthorizationContext} to check for permissions granted by Keycloak for a particular user.
+     *
+     * @param name the name of the resource
+     * @return true if user has was granted with a permission for the given resource. Otherwise, false.
+     */
+    public boolean hasResourcePermission(String name) {
+        return getAuthorizationContext().hasResourcePermission(name);
+    }
+
+    /**
+     * An example on how you can use the {@link AuthorizationContext} to obtain all permissions granted for a particular user.
+     *
+     * @return
+     */
+    public List<Permission> getPermissions() {
+        return getAuthorizationContext().getPermissions();
+    }
+
+    /**
+     * Returns a {@link AuthorizationContext} instance holding all permissions granted for an user. The instance is build based on
+     * the permissions returned by Keycloak. For this particular application, we use the Entitlement API to obtain permissions for every single
+     * resource on the server.
+     *
+     * @return
+     */
+    private AuthorizationContext getAuthorizationContext() {
+        return getSecurityContext().getAuthorizationContext();
     }
 }

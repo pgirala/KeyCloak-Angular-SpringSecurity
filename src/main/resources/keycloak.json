@@ -1,0 +1,12 @@
+{
+  "realm": "keycloakdemo",
+  "auth-server-url": "http://localhost:8080/auth/",
+  "ssl-required": "external",
+  "resource": "angular-app-backend",
+  "verify-token-audience": true,
+  "credentials": {
+    "secret": "de7927fe-42a2-4846-9a87-584312796943"
+  },
+  "confidential-port": 0,
+  "policy-enforcer": {}
+}

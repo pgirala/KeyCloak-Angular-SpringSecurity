@@ -13,7 +13,7 @@ export class AppComponent
 
   constructor(private oauthService: OAuthService) {
     this.configure();
-    this.login;
+    this.login();
   }
 
 authConfig: AuthConfig = {

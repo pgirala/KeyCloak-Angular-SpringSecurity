@@ -23,6 +23,7 @@
     "@formio/angular": "^5.0.0",
     "angular-formio": "^4.11.2",
     "angular-oauth2-oidc": "^10.0.3",
+    "angular-oauth2-oidc-jwks": "^9.0.0",
     "bootstrap": "^4.5.2",
     "formiojs": "^4.12.4",
     "jquery": "^3.5.1",

@@ -16,7 +16,7 @@ import {LogoutComponent} from "./logout/logout.component";
 import { FormioModule } from 'angular-formio';
 import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
-import { OAuthModule } from 'angular-oauth2-oidc';
+import { OAuthModule, OAuthStorage  } from 'angular-oauth2-oidc';
 
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
@@ -56,7 +56,9 @@ export function kcFactory(keycloakService: KeycloakService) {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }],
+    },
+    { provide: OAuthStorage, useValue: localStorage }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

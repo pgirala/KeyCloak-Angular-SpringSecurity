@@ -1,6 +1,8 @@
 import {Component} from "@angular/core";
-import { OAuthService, NullValidationHandler, AuthConfig } from 'angular-oauth2-oidc';
-import { JwksValidationHandler } from 'angular-oauth2-oidc';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { filter } from 'rxjs/operators';
+import { authCodeFlowConfig } from './auth.config';
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 
 @Component({
   selector: 'app-root',
@@ -12,32 +14,35 @@ export class AppComponent
   title = 'KeyCloak Demo';
 
   constructor(private oauthService: OAuthService) {
-    this.configure();
-    this.login();
+    this.oauthService.configure(authCodeFlowConfig);
+    this.oauthService.loadDiscoveryDocumentAndLogin();
+
+    //this.oauthService.setupAutomaticSilentRefresh();
+
+    // Automatically load user profile
+    this.oauthService.events
+      .pipe(filter(e => e.type === 'token_received'))
+      .subscribe(_ => this.oauthService.loadUserProfile());
+
+      alert(this.userName);
   }
 
-authConfig: AuthConfig = {
-    issuer: 'http://localhost:8080/auth/realms/keycloakdemo',
-    redirectUri: window.location.origin,
-    clientId: 'angular-app-backend',
-    scope: 'openid profile email offline_access roles',
-    responseType: 'code',
-    // at_hash is not present in JWT token
-    disableAtHashCheck: true,
-    showDebugInformation: true
+
+  get userName(): string {
+    const claims = this.oauthService.getIdentityClaims();
+    if (!claims) return null;
+    return claims['given_name'];
   }
 
-  public login() {
-    this.oauthService.initLoginFlow();
+  get idToken(): string {
+    return this.oauthService.getIdToken();
   }
 
-  public logoff() {
-    this.oauthService.logOut();
+  get accessToken(): string {
+    return this.oauthService.getAccessToken();
   }
 
-  private configure() {
-    this.oauthService.configure(this.authConfig);
-    this.oauthService.tokenValidationHandler = new  NullValidationHandler();
-    this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  refresh() {
+    this.oauthService.refreshToken();
   }
 }

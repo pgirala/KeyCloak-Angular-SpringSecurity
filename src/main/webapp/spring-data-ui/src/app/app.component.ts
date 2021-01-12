@@ -23,8 +23,6 @@ export class AppComponent
     this.oauthService.events
       .pipe(filter(e => e.type === 'token_received'))
       .subscribe(_ => this.oauthService.loadUserProfile());
-
-      alert(this.userName);
   }
 
 

@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.Random;
 
 @RestController
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT})
 @RequestMapping("/api/v1/project")
 public class ProjectController
 {

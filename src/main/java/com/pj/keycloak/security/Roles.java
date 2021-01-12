@@ -8,8 +8,9 @@ public class Roles
 {
     static public final String ROLE_ADMIN ="ROLE_ADMIN";
     static public final String ROLE_GESTOR="ROLE_GESTOR";
+    static public final String ROLE_ANONYMOUS="ROLE_ANONYMOUS";
     static public final List<String>ROL_LIST=new ArrayList<String>(
-        Arrays.asList(ROLE_ADMIN, ROLE_GESTOR)
+        Arrays.asList(ROLE_ADMIN, ROLE_GESTOR, ROLE_ANONYMOUS)
     );
 
     private Roles()

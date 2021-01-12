@@ -47,7 +47,7 @@ public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter
         http.logout().logoutSuccessUrl("/home")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_GESTOR");
+                .antMatchers("/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_GESTOR", "ROLE_ANONYMOUS");
     }
 
     /**

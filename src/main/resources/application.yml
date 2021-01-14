@@ -9,7 +9,7 @@ keycloak:
   resource: angular-app-backend
   bearer-only: true
   credentials:
-    secret: de7927fe-42a2-4846-9a87-584312796943
+    secret: 89776349-86cb-4ab3-80b9-db8b078e2656
   principal-attribute: preferred_username
   enabled: true
 
@@ -43,3 +43,4 @@ logging:
     org:
       springframework:
         security: DEBUG
+

@@ -19,7 +19,7 @@ export class KeycloakService
     {
       const config = {
         'url': 'http://localhost:8080/auth',
-        'realm': 'keycloakdemo',
+        'realm': 'spring-boot-quickstart',
         'clientId': 'angular-app'
       };
       // @ts-ignore
@@ -45,7 +45,7 @@ export class KeycloakService
   {
     const options = {
       'redirectUri': 'http://localhost:4200',
-      'realm': 'keycloakdemo',
+      'realm': 'spring-boot-quickstart',
       'clientId': 'angular-app'
     };
     this.keycloakAuth.logout(options);

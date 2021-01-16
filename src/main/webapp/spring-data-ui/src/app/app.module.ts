@@ -40,7 +40,7 @@ export function kcFactory(keycloakService: KeycloakService) {
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
-          allowedUrls: ['http://localhost:8081/api'],
+          allowedUrls: ['http://localhost:8010/proxy/api'],
           sendAccessToken: true
       }
     }),

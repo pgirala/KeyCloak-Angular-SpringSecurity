@@ -81,7 +81,7 @@ export class EmployeeViewComponent implements OnInit
     console.info(this.employeeForm.value);
     let employee=this.employeeForm.value;
 
-    this.employeeService.updateEmployee('http://localhost:8081/api/v1/employee/update', employee).subscribe(
+    this.employeeService.updateEmployee('http://localhost:8010/proxy/api/v1/employee/update', employee).subscribe(
       data=>
       {
         this.employee=data;

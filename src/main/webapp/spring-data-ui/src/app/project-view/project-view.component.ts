@@ -40,7 +40,7 @@ export class ProjectViewComponent implements OnInit
     let id=this.activatedRoute.snapshot.params.id;
 
     this.ngxSpinnerService.show();
-    this.projectService.getProjectById('http://localhost:8081/api/v1/project/find/'+id).subscribe(
+    this.projectService.getProjectById('http://localhost:8010/proxy/api/v1/project/find/'+id).subscribe(
       data=>
       {
         this.project=data;
@@ -73,7 +73,7 @@ export class ProjectViewComponent implements OnInit
     console.info(this.projectForm.value);
     let project=this.projectForm.value;
 
-    this.projectService.updateProject('http://localhost:8081/api/v1/project/update', project).subscribe(
+    this.projectService.updateProject('http://localhost:8010/proxy/api/v1/project/update', project).subscribe(
       data=>
       {
         this.project=data;

@@ -44,7 +44,7 @@ export class EmployeeViewComponent implements OnInit
     let id=this.activatedRoute.snapshot.params.id;
 
     this.ngxSpinnerService.show();
-    this.employeeService.getEmployeeById('http://localhost:8081/api/v1/employee/find/'+id).subscribe(
+    this.employeeService.getEmployeeById('http://localhost:8010/proxy/api/v1/employee/find/'+id).subscribe(
       data=>
       {
         this.employee=data;

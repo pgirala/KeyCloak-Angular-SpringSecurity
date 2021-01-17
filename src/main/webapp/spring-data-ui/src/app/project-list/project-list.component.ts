@@ -28,7 +28,7 @@ export class ProjectListComponent implements OnInit
   private getProjects()
   {
     this.ngxSpinnerService.show();
-    this.projectService.getProjects('http://localhost:8081/api/v1/project/list').subscribe(
+    this.projectService.getProjects('http://localhost:8010/proxy/api/v1/project/list').subscribe(
       data=>
       {
         this.projects=data;
@@ -55,7 +55,7 @@ export class ProjectListComponent implements OnInit
     project.location='(location)';
     project.budget='0.0';
 
-    this.projectService.createProject('http://localhost:8081/api/v1/project/create',project).subscribe(
+    this.projectService.createProject('http://localhost:8010/proxy/api/v1/project/create',project).subscribe(
       data=>
       {
         this.projects=data;
@@ -70,7 +70,7 @@ export class ProjectListComponent implements OnInit
 
   deleteProject(id: number)
   {
-    this.projectService.deleteProject('http://localhost:8081/api/v1/project/delete/'+id).subscribe(
+    this.projectService.deleteProject('http://localhost:8010/proxy/api/v1/project/delete/'+id).subscribe(
       data=>
       {
         this.getProjects();

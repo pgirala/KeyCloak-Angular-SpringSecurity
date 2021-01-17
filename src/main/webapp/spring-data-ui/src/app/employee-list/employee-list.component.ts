@@ -60,7 +60,7 @@ export class EmployeeListComponent implements OnInit
     employee.phone='(phone)';
 
 
-    this.employeeService.createEmployee('http://localhost:8081/api/v1/employee/create',employee).subscribe(
+    this.employeeService.createEmployee('http://localhost:8010/proxy/api/v1/employee/create',employee).subscribe(
       data=>
       {
         this.employees=data;
@@ -75,7 +75,7 @@ export class EmployeeListComponent implements OnInit
 
   deleteEmployee(id: number)
   {
-    this.employeeService.deleteEmployee('http://localhost:8081/api/v1/employee/delete/'+id).subscribe(
+    this.employeeService.deleteEmployee('http://localhost:8010/proxy/api/v1/employee/delete/'+id).subscribe(
       data=>
       {
         this.getEmployees();

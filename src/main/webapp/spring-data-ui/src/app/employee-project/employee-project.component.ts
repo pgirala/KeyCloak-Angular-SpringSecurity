@@ -26,7 +26,7 @@ export class EmployeeProjectComponent implements OnInit
   private getEmployeeProjects()
   {
     this.ngxSpinnerService.show();
-    this.employeeProjectService.getEmployeeProjects('http://localhost:8081/api/v1/employee_project/list').subscribe(
+    this.employeeProjectService.getEmployeeProjects('http://localhost:8010/proxy/api/v1/employee_project/list').subscribe(
       data=>
       {
         this.employeeProjects=data;

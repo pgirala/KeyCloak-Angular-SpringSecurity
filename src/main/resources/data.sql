@@ -20,7 +20,7 @@ INSERT INTO `acl_class` (`id`, `class`) VALUES
 	(3, 'com.pj.keycloak.model.Project');
 /*!40000 ALTER TABLE `acl_class` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.acl_entry: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.acl_entry: ~19 rows (aproximadamente)
 DELETE FROM `acl_entry`;
 /*!40000 ALTER TABLE `acl_entry` DISABLE KEYS */;
 INSERT INTO `acl_entry` (`id`, `acl_object_identity`, `ace_order`, `sid`, `mask`, `granting`, `audit_success`, `audit_failure`) VALUES
@@ -48,7 +48,7 @@ INSERT INTO `acl_entry` (`id`, `acl_object_identity`, `ace_order`, `sid`, `mask`
 	(144, 37, 2, 13, 8, 1, 0, 0);
 /*!40000 ALTER TABLE `acl_entry` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.acl_object_identity: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.acl_object_identity: ~6 rows (aproximadamente)
 DELETE FROM `acl_object_identity`;
 /*!40000 ALTER TABLE `acl_object_identity` DISABLE KEYS */;
 INSERT INTO `acl_object_identity` (`id`, `object_id_class`, `object_id_identity`, `parent_object`, `owner_sid`, `entries_inheriting`) VALUES
@@ -65,19 +65,19 @@ INSERT INTO `acl_object_identity` (`id`, `object_id_class`, `object_id_identity`
 DELETE FROM `acl_sid`;
 /*!40000 ALTER TABLE `acl_sid` DISABLE KEYS */;
 INSERT INTO `acl_sid` (`id`, `principal`, `sid`) VALUES
-	(1, 1, 'jdoe@example.com'),
-	(14, 1, 'pgirala@gmail.com'),
+	(1, 1, 'pgalvez'),
+	(14, 1, 'pgirala'),
 	(13, 0, 'ROLE_ADMIN'),
 	(15, 0, 'ROLE_GESTOR');
 /*!40000 ALTER TABLE `acl_sid` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.employee: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.employee: ~4 rows (aproximadamente)
 DELETE FROM `employee`;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
 INSERT INTO `employee` (`employee_id`, `location`, `salary`, `id`) VALUES
 	(22340, 'Pinto', 1000, 2),
 	(810965, 'Córdoba', 2000, 3),
-	(920247, 'Falls Church', 200000, 48);
+	(920247, 'Alpedrete', 600000, 48);
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 
 -- Volcando datos para la tabla keycloak-springsecurity.employee_project: ~2 rows (aproximadamente)
@@ -85,10 +85,11 @@ DELETE FROM `employee_project`;
 /*!40000 ALTER TABLE `employee_project` DISABLE KEYS */;
 INSERT INTO `employee_project` (`employee_id`, `project_id`) VALUES
 	(2, 1),
-	(3, 1);
+	(3, 1),
+	(48, 1);
 /*!40000 ALTER TABLE `employee_project` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.jv_commit: ~39 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.jv_commit: ~6 rows (aproximadamente)
 DELETE FROM `jv_commit`;
 /*!40000 ALTER TABLE `jv_commit` DISABLE KEYS */;
 /*!40000 ALTER TABLE `jv_commit` ENABLE KEYS */;
@@ -98,31 +99,31 @@ DELETE FROM `jv_commit_property`;
 /*!40000 ALTER TABLE `jv_commit_property` DISABLE KEYS */;
 /*!40000 ALTER TABLE `jv_commit_property` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.jv_global_id: ~21 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.jv_global_id: ~4 rows (aproximadamente)
 DELETE FROM `jv_global_id`;
 /*!40000 ALTER TABLE `jv_global_id` DISABLE KEYS */;
 /*!40000 ALTER TABLE `jv_global_id` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.jv_snapshot: ~42 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.jv_snapshot: ~9 rows (aproximadamente)
 DELETE FROM `jv_snapshot`;
 /*!40000 ALTER TABLE `jv_snapshot` DISABLE KEYS */;
 /*!40000 ALTER TABLE `jv_snapshot` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.project: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.project: ~1 rows (aproximadamente)
 DELETE FROM `project`;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
 INSERT INTO `project` (`id`, `budget`, `location`, `name`) VALUES
-	(1, 1000000, 'Valdemoro', 'CoFFEE'),
+	(1, 2000, 'Madrid', 'CoFFEE'),
 	(3, 10, 'Madrid', 'ATENEA');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.user_profile: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.user_profile: ~4 rows (aproximadamente)
 DELETE FROM `user_profile`;
 /*!40000 ALTER TABLE `user_profile` DISABLE KEYS */;
 INSERT INTO `user_profile` (`id`, `email`, `first_name`, `last_name`, `phone`, `user_guid`) VALUES
-	(2, 'pgirala@gmail.com', 'Pablo', 'Gálvez Irala', '555-555-5555', '827ab723-c115-4a28-8f49-5b3ec89ecf02'),
+	(2, 'pgirala@gmail.com', 'Pablo', 'Gálvez Irala', '555-555-5555', 'd0e27e2d-0438-4fbc-905a-cd401bbe0c95'),
 	(3, 'lranchal@gmail.com', 'Luis', 'Ranchal', '202-345-2333', '827ab723-c115-4a28-8f49-5b3ec89ecf02'),
-	(48, 'alagunas@gmail.com', 'Alberto', 'Lagunas', '202-345-2333', 'e1a0b843-f705-4764-a7f3-1d73bfbb55f7');
+	(48, 'alagunas@gmail.com', 'Alberto', 'Lagunas', '302-345-2333', 'e1a0b843-f705-4764-a7f3-1d73bfbb55f7');
 /*!40000 ALTER TABLE `user_profile` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

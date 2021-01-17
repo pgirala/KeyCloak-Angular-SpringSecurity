@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "dd463217-3175-4ff8-98a1-0b31b2ff6dfe",
+		"name": "Angular",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PeticiónToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "angular-app",
+							"type": "text"
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "pgirala",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Test@2020",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "0b886894-ccb9-4e81-b7e5-cb6e1f3f8411",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/realms/spring-boot-quickstart/protocol/openid-connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"realms",
+						"spring-boot-quickstart",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PeticiónDatos",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"type": "text",
+						"value": "Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJTdjlRdnJPTUNqbkpDNUpYRmY5OUFEZl9XdGpqQ2o1YlNYYnVFMVV3dDdZIn0.eyJleHAiOjE2MTA4NDIyMDcsImlhdCI6MTYxMDg0MTkwNywianRpIjoiOGI5MzMxOGEtMDRlYS00YjY4LWE5NzktMjZjOWI1ZjQ2NjUxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL3NwcmluZy1ib290LXF1aWNrc3RhcnQiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMzUwNGU4ODQtYjNjZi00NGJlLTg4MGEtODg0YjAwNGY5MmZkIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYW5ndWxhci1hcHAiLCJzZXNzaW9uX3N0YXRlIjoiZGJmZjg4MGEtZThlYy00YmE4LTg1NjEtNTc4YjY4NDNkYTViIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJST0xFX0dFU1RPUiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoiZW1haWwgcHJvZmlsZSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwicHJlZmVycmVkX3VzZXJuYW1lIjoicGdpcmFsYSIsImVtYWlsIjoicGdpcmFsYUBnbWFpbC5jb20ifQ.SJCqkLAOLTItPVQqujT9N0PBugqgnMSV4LTkiPIrr9vrzzNJYAOhLR9vZfIUPgj9xSz6TGWt4cEsD7kKnww51PPn1ja2EVD2y2R1oOkA9hRpXd4Y5XgjDS76sXNgZf-Zx3qqyQGJIcmKVJjpBo_Ltiv7Z_KvnCDY1ZYCKsmd7PIh329n2HJBzbaKzP0xzxF8OfgEkv8LvJY9-Fh9FNSFlHJfCwfejaxY6zre_aas_5VwG9VQDE2TRbGTh5M5rKCWAu1aitSgFo9b7z03QsbCNGbpvPIsBVzuM4wmHHD7WdHPqZ-kBSGurRFjJpYhcZg40cduALdTsyk1K_lrmicA8Q"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8082/api/v1/employee/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8082",
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"list"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

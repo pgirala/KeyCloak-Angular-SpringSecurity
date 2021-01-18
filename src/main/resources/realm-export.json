@@ -1,7 +1,7 @@
 {
   "id": "spring-boot-quickstart",
   "realm": "spring-boot-quickstart",
-  "notBefore": 0,
+  "notBefore": 1610987429,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
   "accessTokenLifespan": 300,
@@ -389,7 +389,40 @@
       ]
     }
   },
-  "groups": [],
+  "groups": [
+    {
+      "id": "7a430498-3986-488e-bee6-8d2242746a0a",
+      "name": "OIP",
+      "path": "/OIP",
+      "attributes": {},
+      "realmRoles": [
+        "ROLE_GESTOR"
+      ],
+      "clientRoles": {},
+      "subGroups": [
+        {
+          "id": "ff39f19e-81e8-42a5-9427-12ee8ca65fdf",
+          "name": "DII",
+          "path": "/OIP/DII",
+          "attributes": {},
+          "realmRoles": [
+            "ROLE_ADMIN"
+          ],
+          "clientRoles": {},
+          "subGroups": []
+        },
+        {
+          "id": "b8b6a02b-6ad5-456f-933b-93bc60c14e53",
+          "name": "DI",
+          "path": "/OIP/DI",
+          "attributes": {},
+          "realmRoles": [],
+          "clientRoles": {},
+          "subGroups": []
+        }
+      ]
+    }
+  ],
   "defaultRoles": [
     "uma_authorization",
     "offline_access"
@@ -859,13 +892,53 @@
         "policyEnforcementMode": "ENFORCING",
         "resources": [
           {
+            "name": "Proyectos",
+            "ownerManagedAccess": false,
+            "displayName": "Proyectos",
+            "attributes": {},
+            "_id": "157da0ff-7777-43ec-9665-e488a98e3baf",
+            "uris": [
+              "/api/v1/project/*"
+            ]
+          },
+          {
+            "name": "Auditoría",
+            "ownerManagedAccess": false,
+            "displayName": "Auditoría",
+            "attributes": {},
+            "_id": "169afa7b-20cf-462a-a9bb-58b777be3069",
+            "uris": [
+              "/api/v1/audit/*"
+            ]
+          },
+          {
             "name": "Default Resource",
             "type": "urn:hola:resources:default",
             "ownerManagedAccess": false,
             "attributes": {},
             "_id": "3861376f-1fa3-47b5-8dfa-0348d4a745f8",
             "uris": [
-              "/*"
+              "/api/v1/*"
+            ]
+          },
+          {
+            "name": "Empleados asignados a proyectos",
+            "ownerManagedAccess": false,
+            "displayName": "Empleados asignados a proyectos",
+            "attributes": {},
+            "_id": "756266c6-6a98-4376-ab2a-bff2960aa244",
+            "uris": [
+              "/api/v1/employee_project/*"
+            ]
+          },
+          {
+            "name": "Empleados",
+            "ownerManagedAccess": false,
+            "displayName": "Empleados",
+            "attributes": {},
+            "_id": "e15e0e2e-0a59-4380-b16e-56db314cd150",
+            "uris": [
+              "/api/v1/employee/*"
             ]
           }
         ],
@@ -882,15 +955,96 @@
             }
           },
           {
+            "id": "4e844a11-0932-4eb5-b351-1e5d5e439190",
+            "name": "Denegación",
+            "description": "Denegación",
+            "type": "time",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "noa": "2021-01-01 00:00:00"
+            }
+          },
+          {
+            "id": "b0139456-64ae-4f13-8639-c75f99e7d45f",
+            "name": "Administradores",
+            "description": "Administradores",
+            "type": "role",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "roles": "[{\"id\":\"ROLE_ADMIN\",\"required\":true}]"
+            }
+          },
+          {
+            "id": "f39792bb-c928-4de5-b979-8732a484d677",
+            "name": "Gestores",
+            "description": "Gestores",
+            "type": "role",
+            "logic": "POSITIVE",
+            "decisionStrategy": "UNANIMOUS",
+            "config": {
+              "roles": "[{\"id\":\"ROLE_GESTOR\",\"required\":true}]"
+            }
+          },
+          {
+            "id": "30d5b07e-04e1-4384-8957-adb019b75c12",
+            "name": "Acceso a empleados asignados a proyectos",
+            "description": "Acceso a empleados asignados a proyectos",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"Empleados asignados a proyectos\"]",
+              "applyPolicies": "[\"Administradores\",\"Gestores\"]"
+            }
+          },
+          {
+            "id": "5d76d92f-fa0b-46cf-91d9-860ed3f136ff",
+            "name": "Acceso a proyectos",
+            "description": "Acceso a proyectos",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"Proyectos\"]",
+              "applyPolicies": "[\"Administradores\",\"Gestores\"]"
+            }
+          },
+          {
             "id": "5e55ebd6-73e0-4307-8f34-d83095f9c828",
             "name": "Default Permission",
             "description": "A permission that applies to the default resource type",
             "type": "resource",
             "logic": "POSITIVE",
-            "decisionStrategy": "UNANIMOUS",
+            "decisionStrategy": "CONSENSUS",
             "config": {
               "defaultResourceType": "urn:hola:resources:default",
-              "applyPolicies": "[\"Default Policy\"]"
+              "applyPolicies": "[\"Default Policy\",\"Denegación\"]"
+            }
+          },
+          {
+            "id": "84b06f69-b3f7-4c81-adf0-6df2920076fd",
+            "name": "Acceso a auditoría",
+            "description": "Acceso a auditoría",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"Auditoría\"]",
+              "applyPolicies": "[\"Administradores\",\"Gestores\"]"
+            }
+          },
+          {
+            "id": "e772c691-c98f-4c9b-978d-eeca7d8d62f1",
+            "name": "Acceso a empleados",
+            "description": "Acceso a empleados",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"Empleados\"]",
+              "applyPolicies": "[\"Administradores\",\"Gestores\"]"
             }
           }
         ],

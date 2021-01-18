@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Employee} from "src/app/employee-list/employee";
 import {EmployeeService} from "src/app/employee-list/employee.service";
+import {AuditService} from "src/app/audit.service";
 
 @Component({
   selector: 'app-employee-view',
@@ -28,6 +29,7 @@ export class EmployeeViewComponent implements OnInit
 
 
   constructor(private employeeService:EmployeeService,
+              private auditService:AuditService,
               private formBuilder:FormBuilder,
               private activatedRoute:ActivatedRoute,
               private router:Router,
@@ -111,5 +113,43 @@ export class EmployeeViewComponent implements OnInit
   cancelUpdate()
   {
     this.editMode=false;
+  }
+
+  historyEmployee(){
+    let id=this.activatedRoute.snapshot.params.id;
+
+    this.ngxSpinnerService.show();
+    this.auditService.getChanges('http://localhost:8010/proxy/api/v1/audit/employee/'+id).subscribe(
+      data=>
+      {
+        let mensaje = "History";
+        for (let item of data) {
+          mensaje = mensaje + '\n' + item.date;
+          mensaje = mensaje + '   ' + item.author;
+          mensaje = mensaje + '  [' + item.property + ']:';
+          mensaje = mensaje + ' ' + item.from;
+          mensaje = mensaje + ' -> ' + item.to;
+      }
+        /*this.employee=data;
+        this.employeeForm.patchValue(
+          {
+            id: data.id,
+            employeeId: data.employeeId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: data.phone,
+            salary: data.salary,
+            location: data.location,
+          });*/
+        this.ngxSpinnerService.hide();
+        alert(mensaje);
+        //this.activatedRoute.snapshot.params.editMode=='true'?this.editMode=true:this.editMode=false;
+      },
+      error1 =>
+      {
+        this.ngxSpinnerService.hide();
+      }
+    );
   }
 }

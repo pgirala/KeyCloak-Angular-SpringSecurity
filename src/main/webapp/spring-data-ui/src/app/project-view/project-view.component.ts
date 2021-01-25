@@ -1,9 +1,10 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, EventEmitter} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Project} from "src/app/project-list/project";
 import {ProjectService} from "src/app/project-list/project.service";
+import { Formio } from 'angular-formio';
 
 @Component({
   selector: 'app-project-view',
@@ -14,6 +15,8 @@ export class ProjectViewComponent implements OnInit
 {
   project: Project;
   editMode: boolean=false;
+  triggerRefresh: EventEmitter<Object>;
+  data: string='{"data":{"id":"","name":"MILK","location":"Madrid","budget":"1000"}}';
 
   projectForm = this.formBuilder.group({
     id: [{disabled: true}],
@@ -51,6 +54,14 @@ export class ProjectViewComponent implements OnInit
     this.projectService.getProjectById('http://localhost:8081/api/v1/project/find/'+id).subscribe(
       data=>
       {
+        this.triggerRefresh = new EventEmitter();
+        alert('antes');
+        /*this.triggerRefresh.emit({
+          property: 'form',
+          value: null
+        });*/
+        (new Formio("")).loadForm().then((form) => this.triggerRefresh.emit({ form }));
+        alert('después');
         this.project=data;
         this.projectForm.patchValue(
           {

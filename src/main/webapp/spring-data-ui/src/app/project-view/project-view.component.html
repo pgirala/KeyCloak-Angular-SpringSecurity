@@ -58,7 +58,10 @@
             "tableView": false
         }
     ]
-}' [submission]='{
+}'
+  (change)='onChange($event)'
+  (submit)='onSubmit($event)'
+  [submission]='{
     "data":
     {
       "id":"",

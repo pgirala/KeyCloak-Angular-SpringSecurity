@@ -35,6 +35,14 @@ export class ProjectViewComponent implements OnInit
     this.getProjectDetails();
   }
 
+  onChange(event) {
+    // de momento nada
+  }
+
+  onSubmit(event) {
+    alert(JSON.stringify(event));
+  }
+
   private getProjectDetails()
   {
     let id=this.activatedRoute.snapshot.params.id;

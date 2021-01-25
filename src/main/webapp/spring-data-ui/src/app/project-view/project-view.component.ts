@@ -15,7 +15,7 @@ export class ProjectViewComponent implements OnInit
 {
   project: Project;
   editMode: boolean=false;
-  triggerRefresh: EventEmitter<Object>;
+  triggerRefresh: any;
   data: string='{"data":{"id":"","name":"MILK","location":"Madrid","budget":"1000"}}';
 
   projectForm = this.formBuilder.group({
@@ -56,11 +56,11 @@ export class ProjectViewComponent implements OnInit
       {
         this.triggerRefresh = new EventEmitter();
         alert('antes');
-        /*this.triggerRefresh.emit({
-          property: 'form',
-          value: null
-        });*/
-        (new Formio("")).loadForm().then((form) => this.triggerRefresh.emit({ form }));
+        this.triggerRefresh.emit({
+          property: 'submission',
+          value: JSON.parse(this.data)
+        });
+        //(new Formio("")).loadForm().then((form) => this.triggerRefresh.emit({ form }));
         alert('después');
         this.project=data;
         this.projectForm.patchValue(

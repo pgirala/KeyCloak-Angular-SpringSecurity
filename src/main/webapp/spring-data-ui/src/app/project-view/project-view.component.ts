@@ -71,15 +71,6 @@ export class ProjectViewComponent implements OnInit
         }
     ]
   }`);
-  submission: any=JSON.parse(`{
-    "data":
-    {
-      "id":"",
-      "name":"CoFFEE",
-      "location":"Madrid",
-      "budget":"1000"
-    }
-  }`);
 
   projectForm = this.formBuilder.group({
     id: [{disabled: true}],
@@ -119,7 +110,7 @@ export class ProjectViewComponent implements OnInit
       {
         this.triggerRefresh.emit({
           property: 'submission',
-          value: this.submission
+          value: JSON.parse('{"data":' + JSON.stringify(data) + '}')
         });
         //(new Formio("")).loadForm().then((form) => this.triggerRefresh.emit({ form }));
         this.project=data;

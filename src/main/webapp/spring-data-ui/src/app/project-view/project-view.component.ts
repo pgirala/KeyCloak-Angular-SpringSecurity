@@ -15,8 +15,71 @@ export class ProjectViewComponent implements OnInit
 {
   project: Project;
   editMode: boolean=false;
-  triggerRefresh: any;
-  data: string='{"data":{"id":"","name":"MILK","location":"Madrid","budget":"1000"}}';
+  triggerRefresh: any=new EventEmitter();
+  myForm: any=JSON.parse(`{
+    "display": "form",
+    "settings": {
+    },
+    "components": [
+        {
+            "legend": "Project",
+            "key": "fieldset",
+            "type": "fieldset",
+            "label": "",
+            "input": false,
+            "tableView": false,
+            "components": [
+                {
+                    "label": "Id",
+                    "hidden": true,
+                    "hideLabel": true,
+                    "tableView": true,
+                    "key": "id",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Name",
+                    "tableView": true,
+                    "key": "name",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Location",
+                    "tableView": true,
+                    "key": "location",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Budget",
+                    "tableView": true,
+                    "key": "budget",
+                    "type": "textfield",
+                    "input": true
+                }
+            ]
+        },
+        {
+            "type": "button",
+            "label": "Submit",
+            "key": "submit",
+            "disableOnInvalid": true,
+            "input": true,
+            "tableView": false
+        }
+    ]
+  }`);
+  submission: any=JSON.parse(`{
+    "data":
+    {
+      "id":"",
+      "name":"CoFFEE",
+      "location":"Madrid",
+      "budget":"1000"
+    }
+  }`);
 
   projectForm = this.formBuilder.group({
     id: [{disabled: true}],
@@ -54,14 +117,11 @@ export class ProjectViewComponent implements OnInit
     this.projectService.getProjectById('http://localhost:8081/api/v1/project/find/'+id).subscribe(
       data=>
       {
-        this.triggerRefresh = new EventEmitter();
-        alert('antes');
         this.triggerRefresh.emit({
           property: 'submission',
-          value: JSON.parse(this.data)
+          value: this.submission
         });
         //(new Formio("")).loadForm().then((form) => this.triggerRefresh.emit({ form }));
-        alert('después');
         this.project=data;
         this.projectForm.patchValue(
           {

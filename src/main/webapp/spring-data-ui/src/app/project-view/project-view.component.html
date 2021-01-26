@@ -4,71 +4,10 @@
 
 <br/> <br/>
 <div class="container container-fluid">
-  <formio [form]='{
-    "display": "form",
-    "settings": {
-    },
-    "components": [
-        {
-            "legend": "Project",
-            "key": "fieldset",
-            "type": "fieldset",
-            "label": "",
-            "input": false,
-            "tableView": false,
-            "components": [
-                {
-                    "label": "Id",
-                    "hidden": true,
-                    "hideLabel": true,
-                    "tableView": true,
-                    "key": "id",
-                    "type": "textfield",
-                    "input": true
-                },
-                {
-                    "label": "Name",
-                    "tableView": true,
-                    "key": "name",
-                    "type": "textfield",
-                    "input": true
-                },
-                {
-                    "label": "Location",
-                    "tableView": true,
-                    "key": "location",
-                    "type": "textfield",
-                    "input": true
-                },
-                {
-                    "label": "Budget",
-                    "tableView": true,
-                    "key": "budget",
-                    "type": "textfield",
-                    "input": true
-                }
-            ]
-        },
-        {
-            "type": "button",
-            "label": "Submit",
-            "key": "submit",
-            "disableOnInvalid": true,
-            "input": true,
-            "tableView": false
-        }
-    ]
-}'
-  (change)='onChange($event)'
-  (submit)='onSubmit($event)'
-  [submission]='{
-    "data":
-    {
-      "id":"",
-      "name":"COOFFE",
-      "location":"Madrid",
-      "budget":"1000"
-    }
-  }' [refresh] = "triggerRefresh" [readOnly]="editMode">
+  <formio [form]="myForm"
+    (change)="onChange($event)"
+    (submit)="onSubmit($event)"
+    [refresh]="triggerRefresh"
+    [readOnly]="editMode">
   </formio>
 </div>

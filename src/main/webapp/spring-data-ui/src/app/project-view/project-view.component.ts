@@ -1,18 +1,19 @@
-import {Component, OnInit, EventEmitter} from "@angular/core";
+import {Component, OnInit, AfterViewInit, EventEmitter, ViewChild} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Project} from "src/app/project-list/project";
 import {ProjectService} from "src/app/project-list/project.service";
-import { Formio } from 'angular-formio';
+import { FormioComponent } from 'angular-formio';
 
 @Component({
   selector: 'app-project-view',
   templateUrl: './project-view.component.html',
   styleUrls: ['./project-view.component.css']
 })
-export class ProjectViewComponent implements OnInit
+export class ProjectViewComponent implements OnInit, AfterViewInit
 {
+  @ViewChild(FormioComponent, {static: true}) formioComponent: FormioComponent;
   project: Project;
   editMode: boolean=false;
   triggerRefresh: any=new EventEmitter();
@@ -90,6 +91,12 @@ export class ProjectViewComponent implements OnInit
   ngOnInit()
   {
     this.getProjectDetails();
+  }
+
+  ngAfterViewInit() {
+    this.formioComponent.formioReady.then(() => {
+      this.formioComponent.formio.disabled = true;
+    });
   }
 
   onChange(event) {

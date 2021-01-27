@@ -25,8 +25,8 @@ const routes: Routes = [
     component: ProjectListComponent
   },
   {
-    path: 'project/list',
-    component: ProjectListComponent
+    path: 'project/:id',
+    component: ProjectViewComponent
   },
   {
     path: 'project',

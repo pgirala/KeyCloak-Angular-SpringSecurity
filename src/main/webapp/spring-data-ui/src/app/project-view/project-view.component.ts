@@ -88,7 +88,11 @@ export class ProjectViewComponent implements OnInit
   }
 
   onSubmit(event) {
-    this.updateProject(event.data);
+    let project = event.data;
+    if (project.id)
+      this.updateProject(project);
+    else
+      this.createProject(project);
   }
 
   private refreshForm(data:any)
@@ -117,6 +121,23 @@ export class ProjectViewComponent implements OnInit
     );
   }
 
+  createProject(project: Project)
+  {
+    this.ngxSpinnerService.show();
+
+    this.projectService.createProject('http://localhost:8081/api/v1/project/create',project).subscribe(
+      data=>
+      {
+        this.refreshForm(data); // importante ya que incluye el id
+        this.ngxSpinnerService.hide();
+      },
+      error1 =>
+      {
+        this.ngxSpinnerService.hide();
+      }
+    );
+  }
+
   updateProject(project: Project)
   {
     this.ngxSpinnerService.show();
@@ -124,7 +145,7 @@ export class ProjectViewComponent implements OnInit
     this.projectService.updateProject('http://localhost:8081/api/v1/project/update', project).subscribe(
       data=>
       {
-        this.refreshForm(data);
+        this.refreshForm(data); // en realidad no es necesario
         this.ngxSpinnerService.hide();
       },
       error1 =>

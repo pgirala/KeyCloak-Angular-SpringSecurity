@@ -63,7 +63,7 @@ export class ProjectViewComponent implements OnInit
             "type": "button",
             "label": "Submit",
             "key": "submit",
-            "customConditional": "show = !instance.disabled",
+            "customConditional": "show = !instance.options.readOnly",
             "disableOnInvalid": true,
             "input": true,
             "tableView": false

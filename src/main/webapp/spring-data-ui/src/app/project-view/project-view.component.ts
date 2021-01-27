@@ -1,10 +1,9 @@
-import {Component, OnInit, EventEmitter, ViewChild} from "@angular/core";
+import {Component, OnInit, EventEmitter} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Project} from "src/app/project-list/project";
 import {ProjectService} from "src/app/project-list/project.service";
-import { FormioComponent } from 'angular-formio';
 
 @Component({
   selector: 'app-project-view',
@@ -13,9 +12,6 @@ import { FormioComponent } from 'angular-formio';
 })
 export class ProjectViewComponent implements OnInit
 {
-  @ViewChild(FormioComponent, {static: true}) formioComponent: FormioComponent;
-  project: Project;
-  editMode: boolean=false; // a eliminar, ya no sirve
   readOnly: boolean=!(this.activatedRoute.snapshot.queryParams.editMode=='true');
   triggerRefresh: any=new EventEmitter();
   myForm: any=JSON.parse(`{
@@ -74,14 +70,6 @@ export class ProjectViewComponent implements OnInit
     ]
   }`);
 
-  projectForm = this.formBuilder.group({
-    id: [{disabled: true}],
-    name: [''],
-    location: [''],
-    budget: [''],
-  });
-
-
   constructor(private projectService:ProjectService,
               private formBuilder:FormBuilder,
               private activatedRoute:ActivatedRoute,
@@ -99,7 +87,16 @@ export class ProjectViewComponent implements OnInit
   }
 
   onSubmit(event) {
-    alert(JSON.stringify(event));
+    //this.updateProject(event.data)
+    this.updateProject(event.data);
+  }
+
+  private refreshForm(data:any)
+  {
+    this.triggerRefresh.emit({
+      property: 'submission',
+      value: JSON.parse('{"data":' + JSON.stringify(data) + '}')
+    });
   }
 
   private getProjectDetails()
@@ -110,21 +107,8 @@ export class ProjectViewComponent implements OnInit
     this.projectService.getProjectById('http://localhost:8081/api/v1/project/find/'+id).subscribe(
       data=>
       {
-        this.triggerRefresh.emit({
-          property: 'submission',
-          value: JSON.parse('{"data":' + JSON.stringify(data) + '}')
-        });
-        //(new Formio("")).loadForm().then((form) => this.triggerRefresh.emit({ form }));
-        this.project=data;
-        this.projectForm.patchValue(
-          {
-            id: data.id,
-            name: data.name,
-            location: data.location,
-            budget: data.budget,
-          });
+        this.refreshForm(data);
         this.ngxSpinnerService.hide();
-        this.activatedRoute.snapshot.params.editMode=='true'?this.editMode=true:this.editMode=false;
       },
       error1 =>
       {
@@ -133,31 +117,14 @@ export class ProjectViewComponent implements OnInit
     );
   }
 
-  editProject()
-  {
-    this.editMode=true;
-  }
-
-  updateProject()
+  updateProject(project: Project)
   {
     this.ngxSpinnerService.show();
-
-    console.info(this.projectForm.value);
-    let project=this.projectForm.value;
 
     this.projectService.updateProject('http://localhost:8081/api/v1/project/update', project).subscribe(
       data=>
       {
-        this.project=data;
-        this.projectForm.patchValue(
-          {
-            id: data.id,
-            name: data.name,
-            location: data.location,
-            budget: data.budget,
-          });
-        this.editMode=false;
-
+        this.refreshForm(data);
         this.ngxSpinnerService.hide();
       },
       error1 =>
@@ -165,11 +132,5 @@ export class ProjectViewComponent implements OnInit
         this.ngxSpinnerService.hide();
       }
     );
-
-  }
-
-  cancelUpdate()
-  {
-    this.editMode=false;
   }
 }

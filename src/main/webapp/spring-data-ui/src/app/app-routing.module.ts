@@ -25,9 +25,14 @@ const routes: Routes = [
     component: ProjectListComponent
   },
   {
-    path: 'project/:id',
+    path: 'project/list',
+    component: ProjectListComponent
+  },
+  {
+    path: 'project',
     component: ProjectViewComponent
-  },  {
+  },
+  {
     path: 'logout',
     component:LogoutComponent
   },

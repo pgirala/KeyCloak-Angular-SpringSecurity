@@ -49,23 +49,7 @@ export class ProjectListComponent implements OnInit
 
   createProject()
   {
-    this.ngxSpinnerService.show();
-    let project=new Project();
-    project.name='(name)';
-    project.location='(location)';
-    project.budget='0.0';
-
-    this.projectService.createProject('http://localhost:8081/api/v1/project/create',project).subscribe(
-      data=>
-      {
-        this.projects=data;
-        this.ngxSpinnerService.hide();
-      },
-      error1 =>
-      {
-        this.ngxSpinnerService.hide();
-      }
-    );
+    this.router.navigate(["/project"], { queryParams: { editMode: 'true' } });
   }
 
   deleteProject(id: number)

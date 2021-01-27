@@ -88,7 +88,6 @@ export class ProjectViewComponent implements OnInit
   }
 
   onSubmit(event) {
-    //this.updateProject(event.data)
     this.updateProject(event.data);
   }
 

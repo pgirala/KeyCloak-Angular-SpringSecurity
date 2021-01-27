@@ -1,4 +1,4 @@
-import {Component, OnInit, AfterViewInit, EventEmitter, ViewChild} from "@angular/core";
+import {Component, OnInit, EventEmitter, ViewChild} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
@@ -11,11 +11,12 @@ import { FormioComponent } from 'angular-formio';
   templateUrl: './project-view.component.html',
   styleUrls: ['./project-view.component.css']
 })
-export class ProjectViewComponent implements OnInit, AfterViewInit
+export class ProjectViewComponent implements OnInit
 {
   @ViewChild(FormioComponent, {static: true}) formioComponent: FormioComponent;
   project: Project;
-  editMode: boolean=false;
+  editMode: boolean=false; // a eliminar, ya no sirve
+  readOnly: boolean=!(this.activatedRoute.snapshot.queryParams.editMode=='true');
   triggerRefresh: any=new EventEmitter();
   myForm: any=JSON.parse(`{
     "display": "form",
@@ -91,12 +92,6 @@ export class ProjectViewComponent implements OnInit, AfterViewInit
   ngOnInit()
   {
     this.getProjectDetails();
-  }
-
-  ngAfterViewInit() {
-    this.formioComponent.formioReady.then(() => {
-      this.formioComponent.formio.disabled = true;
-    });
   }
 
   onChange(event) {

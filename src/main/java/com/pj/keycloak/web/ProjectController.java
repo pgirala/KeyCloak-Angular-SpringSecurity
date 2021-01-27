@@ -42,11 +42,9 @@ public class ProjectController {
     }
 
     @PostMapping(path = "/create")
-    public List<Project> create(@RequestBody Project project) {
+    public Project create(@RequestBody Project project) {
         project.setId(Project.getIdClase()); // para aplicar el permiso CREATE en la ACL
-        projectService.saveAndFlush(project, userInfoUtil);
-
-        return projectService.findAll();
+        return projectService.saveAndFlush(project, userInfoUtil);
     }
 
     @DeleteMapping(path = "/delete/{id}")

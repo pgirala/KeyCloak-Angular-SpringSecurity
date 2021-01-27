@@ -84,7 +84,6 @@ export class ProjectListComponent implements OnInit
 
   editProject(id: number)
   {
-    this.router.navigate(["/project/" + id, { editMode: true }
-    ]);
+    this.router.navigate(["/project/" + id], { queryParams: { editMode: 'true' } });
   }
 }

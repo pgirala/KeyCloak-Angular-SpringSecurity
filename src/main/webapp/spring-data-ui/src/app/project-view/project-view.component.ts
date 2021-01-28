@@ -125,7 +125,7 @@ export class ProjectViewComponent implements OnInit
   {
     this.ngxSpinnerService.show();
 
-    this.projectService.createProject('http://localhost:8081/api/v1/project/create',project).subscribe(
+    this.projectService.createProject('http://localhost:8010/api/v1/project/create',project).subscribe(
       data=>
       {
         this.refreshForm(data); // importante ya que incluye el id
@@ -142,7 +142,7 @@ export class ProjectViewComponent implements OnInit
   {
     this.ngxSpinnerService.show();
 
-    this.projectService.updateProject('http://localhost:8081/api/v1/project/update', project).subscribe(
+    this.projectService.updateProject('http://localhost:8010/api/v1/project/update', project).subscribe(
       data=>
       {
         this.refreshForm(data); // en realidad no es necesario

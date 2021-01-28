@@ -19,8 +19,6 @@ import { ProjectListComponent } from './project-list/project-list.component';
 import { ProjectViewComponent } from './project-view/project-view.component';
 import { OAuthModule, OAuthStorage  } from 'angular-oauth2-oidc';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init();
 }
@@ -47,8 +45,7 @@ export function kcFactory(keycloakService: KeycloakService) {
       }
     }),
     NgxSpinnerModule,
-    FormioModule,
-    BrowserAnimationsModule
+    FormioModule
   ],
   providers: [KeycloakService,
     {

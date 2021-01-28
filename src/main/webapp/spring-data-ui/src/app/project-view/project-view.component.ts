@@ -56,6 +56,32 @@ export class ProjectViewComponent implements OnInit
                     "key": "budget",
                     "type": "textfield",
                     "input": true
+                },
+                {
+                  "type": "select",
+                  "label": "Employees",
+                  "widget": "choicesjs",
+                  "tableView": true,
+                  "multiple": true,
+                  "dataSrc": "url",
+                  "data": {
+                    "url": "http://localhost:8010/proxy/api/v1/employee/list",
+                    "headers": [
+                      {
+                        "key": "Authorization",
+                        "value": {{ metadata.token }}"
+                      }
+                    ]
+                  },
+                  "valueProperty": "firstName",
+                  "key": "employees",
+                  "indexeddb": {
+                    "filter": {}
+                  },
+                  "input": true,
+                  "disableLimit": false,
+                  "lazyLoad": false,
+                  "selectValues":"Results"
                 }
             ]
         },
@@ -99,7 +125,8 @@ export class ProjectViewComponent implements OnInit
   {
     this.triggerRefresh.emit({
       property: 'submission',
-      value: JSON.parse('{"data":' + JSON.stringify(data) + '}')
+      value: JSON.parse('{"data":' + JSON.stringify(data) + '}'); // +
+                         // ', "metadata":{"token":"' + this.request.headers.get('Authorization') + '"}')
     });
   }
 

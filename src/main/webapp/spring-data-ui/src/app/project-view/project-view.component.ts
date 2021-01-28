@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, EventEmitter} from "@angular/core";
 import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
@@ -12,16 +12,64 @@ import {ProjectService} from "src/app/project-list/project.service";
 })
 export class ProjectViewComponent implements OnInit
 {
-  project: Project;
-  editMode: boolean=false;
-
-  projectForm = this.formBuilder.group({
-    id: [{disabled: true}],
-    name: [''],
-    location: [''],
-    budget: [''],
-  });
-
+  readOnly: boolean=!(this.activatedRoute.snapshot.queryParams.editMode=='true');
+  triggerRefresh: any=new EventEmitter();
+  myForm: any=JSON.parse(`{
+    "display": "form",
+    "settings": {
+    },
+    "components": [
+        {
+            "legend": "Project",
+            "key": "fieldset",
+            "type": "fieldset",
+            "label": "",
+            "input": false,
+            "tableView": false,
+            "components": [
+                {
+                    "label": "Id",
+                    "hidden": true,
+                    "hideLabel": true,
+                    "tableView": true,
+                    "key": "id",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Name",
+                    "tableView": true,
+                    "key": "name",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Location",
+                    "tableView": true,
+                    "key": "location",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
+                    "label": "Budget",
+                    "tableView": true,
+                    "key": "budget",
+                    "type": "textfield",
+                    "input": true
+                }
+            ]
+        },
+        {
+            "type": "button",
+            "label": "Submit",
+            "key": "submit",
+            "customConditional": "show = !instance.options.readOnly",
+            "disableOnInvalid": true,
+            "input": true,
+            "tableView": false
+        }
+    ]
+  }`);
 
   constructor(private projectService:ProjectService,
               private formBuilder:FormBuilder,
@@ -35,6 +83,26 @@ export class ProjectViewComponent implements OnInit
     this.getProjectDetails();
   }
 
+  onChange(event) {
+    // de momento nada
+  }
+
+  onSubmit(event) {
+    let project = event.data;
+    if (project.id)
+      this.updateProject(project);
+    else
+      this.createProject(project);
+  }
+
+  private refreshForm(data:any)
+  {
+    this.triggerRefresh.emit({
+      property: 'submission',
+      value: JSON.parse('{"data":' + JSON.stringify(data) + '}')
+    });
+  }
+
   private getProjectDetails()
   {
     let id=this.activatedRoute.snapshot.params.id;
@@ -43,16 +111,8 @@ export class ProjectViewComponent implements OnInit
     this.projectService.getProjectById('http://localhost:8010/proxy/api/v1/project/find/'+id).subscribe(
       data=>
       {
-        this.project=data;
-        this.projectForm.patchValue(
-          {
-            id: data.id,
-            name: data.name,
-            location: data.location,
-            budget: data.budget,
-          });
+        this.refreshForm(data);
         this.ngxSpinnerService.hide();
-        this.activatedRoute.snapshot.params.editMode=='true'?this.editMode=true:this.editMode=false;
       },
       error1 =>
       {
@@ -61,31 +121,14 @@ export class ProjectViewComponent implements OnInit
     );
   }
 
-  editProject()
-  {
-    this.editMode=true;
-  }
-
-  updateProject()
+  createProject(project: Project)
   {
     this.ngxSpinnerService.show();
 
-    console.info(this.projectForm.value);
-    let project=this.projectForm.value;
-
-    this.projectService.updateProject('http://localhost:8010/proxy/api/v1/project/update', project).subscribe(
+    this.projectService.createProject('http://localhost:8081/api/v1/project/create',project).subscribe(
       data=>
       {
-        this.project=data;
-        this.projectForm.patchValue(
-          {
-            id: data.id,
-            name: data.name,
-            location: data.location,
-            budget: data.budget,
-          });
-        this.editMode=false;
-
+        this.refreshForm(data); // importante ya que incluye el id
         this.ngxSpinnerService.hide();
       },
       error1 =>
@@ -93,11 +136,22 @@ export class ProjectViewComponent implements OnInit
         this.ngxSpinnerService.hide();
       }
     );
-
   }
 
-  cancelUpdate()
+  updateProject(project: Project)
   {
-    this.editMode=false;
+    this.ngxSpinnerService.show();
+
+    this.projectService.updateProject('http://localhost:8081/api/v1/project/update', project).subscribe(
+      data=>
+      {
+        this.refreshForm(data); // en realidad no es necesario
+        this.ngxSpinnerService.hide();
+      },
+      error1 =>
+      {
+        this.ngxSpinnerService.hide();
+      }
+    );
   }
 }

@@ -23,39 +23,33 @@ import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import com.pj.keycloak.util.UserInfoUtil;
 
 @Service
-public class ProjectServiceImpl implements ProjectService
-{
+public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private JdbcMutableAclService aclService;
 
     private final ProjectRepository projectRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository)
-    {
+    public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 
     @Override
-    public List<Project> findAll()
-    {
+    public List<Project> findAll() {
         return projectRepository.findAll();
     }
 
     @Override
-    public Optional<Project> findById(Long id)
-    {
+    public Optional<Project> findById(Long id) {
         return projectRepository.findById(id);
     }
 
     @Override
-    public Project updateProfile(Project project)
-    {
+    public Project updateProfile(Project project) {
         return projectRepository.saveAndFlush(project);
     }
 
     @Override
-    public void saveAndFlush(Project project, UserInfoUtil userInfoUtil)
-    {
+    public Project saveAndFlush(Project project, UserInfoUtil userInfoUtil) {
         project.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Project newProject = projectRepository.saveAndFlush(project);
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newProject.getClass().getName(), project.getId());
@@ -63,21 +57,22 @@ public class ProjectServiceImpl implements ProjectService
         // Now let's add a couple of permissions
         int i = 0;
 
-        for(String rol : userInfoUtil.getRoles()) {
+        for (String rol : userInfoUtil.getRoles()) {
             mutableAcl.insertAce(i++, BasePermission.READ, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.WRITE, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.DELETE, new GrantedAuthoritySid(rol), true);
-       }
-       
-		// Explicitly save the changed ACL
-		aclService.updateAcl(mutableAcl);   
+        }
+
+        // Explicitly save the changed ACL
+        aclService.updateAcl(mutableAcl);
+
+        return newProject;
     }
 
     @Override
-    public void deleteById(Long id)
-    {
+    public void deleteById(Long id) {
         projectRepository.deleteById(id);
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(Project.class.getName(), id);
         aclService.deleteAcl(objectIdentity, true);
-     }
+    }
 }

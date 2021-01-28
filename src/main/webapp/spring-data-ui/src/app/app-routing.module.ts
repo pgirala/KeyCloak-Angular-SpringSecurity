@@ -27,7 +27,12 @@ const routes: Routes = [
   {
     path: 'project/:id',
     component: ProjectViewComponent
-  },  {
+  },
+  {
+    path: 'project',
+    component: ProjectViewComponent
+  },
+  {
     path: 'logout',
     component:LogoutComponent
   },

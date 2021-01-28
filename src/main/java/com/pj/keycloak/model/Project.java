@@ -12,8 +12,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "project")
 @Data
-public class Project implements Serializable
-{
+public class Project implements Serializable {
     private static final long serialVersionUID = -2482579485413606057L;
 
     @Id
@@ -30,8 +29,7 @@ public class Project implements Serializable
     private Double budget;
 
     @ManyToMany(mappedBy = "projects")
-    @JsonIgnore
-    private Set<Employee> employees=new HashSet<>();
+    private Set<Employee> employees = new HashSet<>();
 
     public static Long getIdClase() {
         // permitirá aplicar el control sobre la creación de instancias en las ACL
@@ -39,8 +37,7 @@ public class Project implements Serializable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
@@ -52,7 +49,7 @@ public class Project implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
-        return Objects.hash(super.hashCode(), getId());
-    }}
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.getId());
+    }
+}

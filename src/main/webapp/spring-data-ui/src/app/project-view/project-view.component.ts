@@ -15,6 +15,7 @@ export class ProjectViewComponent implements OnInit
 {
   readOnly: boolean=!(this.activatedRoute.snapshot.queryParams.editMode=='true');
   triggerRefresh: any=new EventEmitter();
+  firstSubmission: any=this.addToken('{}');
   myForm: any=JSON.parse(`{
     "display": "form",
     "settings": {
@@ -71,7 +72,7 @@ export class ProjectViewComponent implements OnInit
                     "headers": [
                       {
                         "key": "Authorization",
-                        "value": "{{ metadata.token }}"
+                        "value": "{{ data.token }}"
                       }
                     ]
                   },
@@ -124,12 +125,18 @@ export class ProjectViewComponent implements OnInit
       this.createProject(project);
   }
 
+  private addToken(serializedData:string) {
+    let tokenData = '{"token":"' + this.kcService.getAuthHeader() + '"' + (serializedData.length > 2 ? ',' : '') +
+                  serializedData.substring(1, serializedData.length);
+    return JSON.parse('{"data":' + tokenData + '}');
+  }
+
   private refreshForm(data:any)
   {
+    let serializedData = JSON.stringify(data);
     this.triggerRefresh.emit({
       property: 'submission',
-      value: JSON.parse('{"data":' + JSON.stringify(data) +
-                          ', "metadata":{"token":"' + this.kcService.getAuthHeader() + '"}}')
+      value: this.addToken(serializedData)
     });
   }
 

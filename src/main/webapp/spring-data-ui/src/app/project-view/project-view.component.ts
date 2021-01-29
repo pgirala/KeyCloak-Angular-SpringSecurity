@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Project} from "src/app/project-list/project";
 import {ProjectService} from "src/app/project-list/project.service";
+import {KeycloakService} from "../keycloak/keycloak.service";
 
 @Component({
   selector: 'app-project-view',
@@ -69,19 +70,18 @@ export class ProjectViewComponent implements OnInit
                     "headers": [
                       {
                         "key": "Authorization",
-                        "value": {{ metadata.token }}"
+                        "value": "{{ metadata.token }}"
                       }
                     ]
                   },
-                  "valueProperty": "firstName",
+                  "valueProperty": "id",
                   "key": "employees",
                   "indexeddb": {
                     "filter": {}
                   },
                   "input": true,
                   "disableLimit": false,
-                  "lazyLoad": false,
-                  "selectValues":"Results"
+                  "lazyLoad": true
                 }
             ]
         },
@@ -101,7 +101,8 @@ export class ProjectViewComponent implements OnInit
               private formBuilder:FormBuilder,
               private activatedRoute:ActivatedRoute,
               private router:Router,
-              private ngxSpinnerService:NgxSpinnerService)
+              private ngxSpinnerService:NgxSpinnerService,
+              private kcService: KeycloakService)
   { }
 
   ngOnInit()
@@ -125,8 +126,8 @@ export class ProjectViewComponent implements OnInit
   {
     this.triggerRefresh.emit({
       property: 'submission',
-      value: JSON.parse('{"data":' + JSON.stringify(data) + '}'); // +
-                         // ', "metadata":{"token":"' + this.request.headers.get('Authorization') + '"}')
+      value: JSON.parse('{"data":' + JSON.stringify(data) +
+                          ', "metadata":{"token":"' + this.kcService.getAuthHeader() + '"}}')
     });
   }
 

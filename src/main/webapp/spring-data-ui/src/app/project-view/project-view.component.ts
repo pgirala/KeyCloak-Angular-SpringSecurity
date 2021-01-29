@@ -62,6 +62,7 @@ export class ProjectViewComponent implements OnInit
                   "type": "select",
                   "label": "Employees",
                   "widget": "choicesjs",
+                  "uniqueOptions": true,
                   "tableView": true,
                   "multiple": true,
                   "dataSrc": "url",
@@ -75,13 +76,14 @@ export class ProjectViewComponent implements OnInit
                     ]
                   },
                   "valueProperty": "id",
+                  "template": "<span>{{ item.firstName }} {{ item.lastName }}</span>",
                   "key": "employees",
                   "indexeddb": {
                     "filter": {}
                   },
                   "input": true,
                   "disableLimit": false,
-                  "lazyLoad": true
+                  "lazyLoad": false
                 }
             ]
         },

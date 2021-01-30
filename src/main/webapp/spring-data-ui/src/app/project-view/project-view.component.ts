@@ -3,6 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {NgxSpinnerService} from "ngx-spinner";
 import {Project} from "src/app/project-list/project";
+import {Employee} from "src/app/employee-list/employee";
 import {ProjectService} from "src/app/project-list/project.service";
 import {KeycloakService} from "../keycloak/keycloak.service";
 
@@ -118,7 +119,8 @@ export class ProjectViewComponent implements OnInit
   }
 
   onSubmit(event) {
-    let project = event.data;
+    let project = this.fromView2Data(event.data);
+
     if (project.id)
       this.updateProject(project);
     else
@@ -145,6 +147,22 @@ export class ProjectViewComponent implements OnInit
       ids = ids.substring(0, ids.length - 1)
     result = result + ids + ']}'
     return result
+  }
+
+  private fromView2Data(dataView:any)
+  {
+    let project = new Project();
+    project.id = dataView.id;
+    project.name = dataView.name;
+    project.location = dataView.location;
+    project.budget = dataView.budget;
+    project.employees = new Array();
+    dataView.employees.forEach(function (value) {
+      let employee = new Employee();
+      employee.id = value;
+      project.employees.push(employee);
+    })
+    return project;
   }
 
   private refreshForm(data:any)

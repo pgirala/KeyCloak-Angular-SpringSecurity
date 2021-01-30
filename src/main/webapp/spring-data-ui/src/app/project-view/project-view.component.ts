@@ -60,7 +60,6 @@ export class ProjectViewComponent implements OnInit
                     "input": true
                 },
                 {
-                  "type": "select",
                   "label": "Employees",
                   "widget": "choicesjs",
                   "uniqueOptions": true,
@@ -78,13 +77,14 @@ export class ProjectViewComponent implements OnInit
                   },
                   "valueProperty": "id",
                   "template": "<span>{{ item.firstName }} {{ item.lastName }}</span>",
+                  "selectThreshold": 0.3,
                   "key": "employees",
+                  "type": "select",
                   "indexeddb": {
                     "filter": {}
                   },
-                  "input": true,
-                  "disableLimit": false,
-                  "lazyLoad": false
+                  "uniqueValues": true,
+                  "input": true
                 }
             ]
         },

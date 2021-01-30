@@ -131,9 +131,25 @@ export class ProjectViewComponent implements OnInit
     return JSON.parse('{"data":' + tokenData + '}');
   }
 
+  private fromData2View(data:any)
+  {
+    let result = '{"id":' + data.id + ', '
+              + '"name":"' + data.name + '", '
+              + '"location":"' + data.location + '", '
+              + '"budget":"' + data.budget + '", "employees":[';
+    let ids = '';
+    data.employees.forEach(function (value) {
+      ids = ids + value.id + ","
+    });
+    if (ids.length > 0)
+      ids = ids.substring(0, ids.length - 1)
+    result = result + ids + ']}'
+    return result
+  }
+
   private refreshForm(data:any)
   {
-    let serializedData = JSON.stringify(data);
+    let serializedData = this.fromData2View(data);
     this.triggerRefresh.emit({
       property: 'submission',
       value: this.addToken(serializedData)

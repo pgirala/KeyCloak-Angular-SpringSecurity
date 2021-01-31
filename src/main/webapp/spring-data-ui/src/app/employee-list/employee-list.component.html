@@ -37,13 +37,16 @@
   <br/>
   <div class="container container-fluid">
     <h5>
-      <button (click)="createEmployee()" class="btn btn-primary"> Create</button>
-    </h5>
-  </div>
-
-  <div class="container container-fluid">
-    <h5>
-      <button [routerLink]="['/']" class="btn btn-primary">Back</button>
+      <table>
+        <tr>
+          <td>
+            <button (click)="createEmployee()" class="btn btn-primary"> Create</button>
+          </td>
+          <td>
+            <button [routerLink]="['/']" class="btn btn-primary">Back</button>
+          </td>
+        </tr>
+      </table>
     </h5>
   </div>
 </div>

@@ -19,7 +19,7 @@
       <td>{{employeeProject.employeeId}}</td>
       <td>{{employeeProject.firstName}}</td>
       <td>{{employeeProject.lastName}}</td>
-      <td>${{employeeProject.salary}}</td>
+      <td>{{employeeProject.salary | number : '1.2-2'}}</td>
       <td>{{employeeProject.projectName}}</td>
       <td>{{employeeProject.projectLocation}}</td>
     </tr>

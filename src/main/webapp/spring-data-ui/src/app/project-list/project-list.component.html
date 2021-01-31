@@ -18,7 +18,7 @@
       <td> <a routerLink="/project/{{project.id}}"  [queryParams]="{editMode: false}">{{project.id}}</a></td>
       <td>{{project.name}}</td>
       <td>{{project.location}}</td>
-      <td>{{project.budget}}</td>
+      <td>{{project.budget | number : '1.2-2'}}</td>
       <td>
         <button (click)="editProject(project.id)" class="btn btn-primary" style="margin-right: 10px">Edit</button>
         <button (click)="deleteProject(project.id)" class="btn btn-danger">Delete</button>

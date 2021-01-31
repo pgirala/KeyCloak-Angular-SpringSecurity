@@ -35,7 +35,7 @@ public class Project implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "employee_project", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    @JsonManagedReference
+    // @JsonManagedReference
     private Set<Employee> employees = new HashSet<>();
 
     public static Long getIdClase() {

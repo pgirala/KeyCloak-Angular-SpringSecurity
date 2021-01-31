@@ -1,20 +1,23 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center" class="container container-fluid">
-  <h1>
-    Welcome to {{ title }}
-  </h1>
-  <br/> <br/>
- <h2>
-   <a [routerLink]="['/employee/list']">Employees</a> <br/> <br/>
-   <a [routerLink]="['/project/list']">Projects</a> <br/> <br/>
-   <a [routerLink]="['/employee_project/list']">Employee Projects</a>
- </h2>
-</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <img height="25px;" style="display: inline;" alt="Form.io" src="https://help.form.io/assets/formio-logo.png"> | Form.io + Keycloak test
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <ul class="navbar-nav nav-fill mr-auto">
+        <li class="nav-item "><a class="nav-link" [routerLink]="['/employee/list']">Employees</a></li>
+        <li class="nav-item "><a class="nav-link" [routerLink]="['/project/list']">Projects</a></li>
+        <li class="nav-item "><a class="nav-link" [routerLink]="['/employee_project/list']">Project employees</a></li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link" [routerLink]="['/logout']">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <router-outlet></router-outlet>
-
-
-<br/> <br/>
-<div class="container container-fluid">
-  <h5><a [routerLink]="['/logout']">Logout</a></h5>
-</div>

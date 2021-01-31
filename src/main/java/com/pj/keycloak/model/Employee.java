@@ -1,20 +1,23 @@
 package com.pj.keycloak.model;
 
-
 import lombok.Data;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "employee")
 @Data
-public class Employee extends UserProfile implements Serializable
-{
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Employee extends UserProfile implements Serializable {
     private static final long serialVersionUID = -2482579485413606056L;
 
     @Column(name = "employee_id")
@@ -27,10 +30,9 @@ public class Employee extends UserProfile implements Serializable
     private Double salary;
 
     @ManyToMany
-    @JoinTable(name = "employee_project",
-            joinColumns = @JoinColumn(name = "employee_id",referencedColumnName = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
-    private Set<Project> projects=new HashSet<>();
+    @JoinTable(name = "employee_project", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
+    @JsonManagedReference
+    private Set<Project> projects = new HashSet<>();
 
     public static Long getIdClase() {
         // permitirá aplicar el control sobre la creación de instancias en las ACL
@@ -38,8 +40,7 @@ public class Employee extends UserProfile implements Serializable
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (this == o)
             return true;
         if (o == null || getClass() != o.getClass())
@@ -51,8 +52,7 @@ public class Employee extends UserProfile implements Serializable
     }
 
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
         return Objects.hash(super.hashCode(), getEmployeeId());
     }
 }

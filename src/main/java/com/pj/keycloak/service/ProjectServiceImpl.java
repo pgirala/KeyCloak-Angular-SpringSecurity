@@ -3,7 +3,9 @@ package com.pj.keycloak.service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pj.keycloak.model.Project;
+import com.pj.keycloak.model.Employee;
 import com.pj.keycloak.repo.ProjectRepository;
+import com.pj.keycloak.repo.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,9 +30,11 @@ public class ProjectServiceImpl implements ProjectService {
     private JdbcMutableAclService aclService;
 
     private final ProjectRepository projectRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, EmployeeRepository employeeRepository) {
         this.projectRepository = projectRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
@@ -52,6 +56,16 @@ public class ProjectServiceImpl implements ProjectService {
     public Project saveAndFlush(Project project, UserInfoUtil userInfoUtil) {
         project.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Project newProject = projectRepository.saveAndFlush(project);
+        // setting relationships
+        for (Employee employee : project.getEmployees()) {
+            Optional<Employee> persistentEmployee = employeeRepository.findById(employee.getId());
+            if (!persistentEmployee.isEmpty()) {
+                Employee relatedEmployee = persistentEmployee.get();
+                relatedEmployee.getProjects().add(newProject);
+                employeeRepository.saveAndFlush(relatedEmployee);
+            }
+        }
+        // access control
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newProject.getClass().getName(), project.getId());
         MutableAcl mutableAcl = aclService.createAcl(objectIdentity);
         // Now let's add a couple of permissions

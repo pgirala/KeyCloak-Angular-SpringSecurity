@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.io.Serializable;
@@ -29,9 +29,8 @@ public class Employee extends UserProfile implements Serializable {
     @Column(name = "salary")
     private Double salary;
 
-    @ManyToMany
-    @JoinTable(name = "employee_project", joinColumns = @JoinColumn(name = "employee_id"), inverseJoinColumns = @JoinColumn(name = "project_id"))
-    @JsonManagedReference
+    @ManyToMany(mappedBy = "employees")
+    @JsonBackReference
     private Set<Project> projects = new HashSet<>();
 
     public static Long getIdClase() {
@@ -48,11 +47,11 @@ public class Employee extends UserProfile implements Serializable {
         if (!super.equals(o))
             return false;
         Employee employee = (Employee) o;
-        return getEmployeeId().equals(employee.getEmployeeId());
+        return this.getId().equals(employee.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getEmployeeId());
+        return Objects.hash(super.hashCode(), this.getId());
     }
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -33,8 +33,9 @@ public class Project implements Serializable {
     @Column(name = "budget")
     private Double budget;
 
-    @ManyToMany(mappedBy = "projects")
-    @JsonBackReference
+    @ManyToMany
+    @JoinTable(name = "employee_project", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    @JsonManagedReference
     private Set<Employee> employees = new HashSet<>();
 
     public static Long getIdClase() {

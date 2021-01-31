@@ -49,7 +49,19 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProfile(Project project) {
-        return projectRepository.saveAndFlush(project);
+        Project updatedProject = projectRepository.saveAndFlush(project);
+        // setting relationships
+        for (Employee employee : project.getEmployees()) {
+            Optional<Employee> persistentEmployee = employeeRepository.findById(employee.getId());
+            if (!persistentEmployee.isEmpty()) {
+                Employee relatedEmployee = persistentEmployee.get();
+                if (!relatedEmployee.getProjects().contains(updatedProject)) {
+                    relatedEmployee.getProjects().add(updatedProject);
+                    employeeRepository.saveAndFlush(relatedEmployee);
+                }
+            }
+        }
+        return updatedProject;
     }
 
     @Override
@@ -85,8 +97,25 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteById(Long id) {
-        projectRepository.deleteById(id);
-        ObjectIdentity objectIdentity = new ObjectIdentityImpl(Project.class.getName(), id);
-        aclService.deleteAcl(objectIdentity, true);
+        Optional<Project> project = projectRepository.findById(id);
+        if (!project.isEmpty()) {
+            Project persistentProject = project.get();
+            // updating relationships
+            for (Employee employee : persistentProject.getEmployees()) {
+                Optional<Employee> persistentEmployee = employeeRepository.findById(employee.getId());
+                if (!persistentEmployee.isEmpty()) {
+                    Employee relatedEmployee = persistentEmployee.get();
+                    if (relatedEmployee.getProjects().contains(persistentProject)) {
+                        relatedEmployee.getProjects().remove(persistentProject);
+                        employeeRepository.saveAndFlush(relatedEmployee);
+                    }
+                }
+            }
+            // deleting project
+            projectRepository.deleteById(id);
+            // deleting ACL
+            ObjectIdentity objectIdentity = new ObjectIdentityImpl(Project.class.getName(), id);
+            aclService.deleteAcl(objectIdentity, true);
+        }
     }
 }

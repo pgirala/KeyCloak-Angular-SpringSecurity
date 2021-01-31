@@ -3,7 +3,9 @@ package com.pj.keycloak.service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pj.keycloak.model.Project;
+import com.pj.keycloak.model.Employee;
 import com.pj.keycloak.repo.ProjectRepository;
+import com.pj.keycloak.repo.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,9 +30,11 @@ public class ProjectServiceImpl implements ProjectService {
     private JdbcMutableAclService aclService;
 
     private final ProjectRepository projectRepository;
+    private final EmployeeRepository employeeRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, EmployeeRepository employeeRepository) {
         this.projectRepository = projectRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
@@ -52,6 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
     public Project saveAndFlush(Project project, UserInfoUtil userInfoUtil) {
         project.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Project newProject = projectRepository.saveAndFlush(project);
+        // access control
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newProject.getClass().getName(), project.getId());
         MutableAcl mutableAcl = aclService.createAcl(objectIdentity);
         // Now let's add a couple of permissions
@@ -71,8 +76,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void deleteById(Long id) {
-        projectRepository.deleteById(id);
-        ObjectIdentity objectIdentity = new ObjectIdentityImpl(Project.class.getName(), id);
-        aclService.deleteAcl(objectIdentity, true);
+        Optional<Project> project = projectRepository.findById(id);
+        if (!project.isEmpty()) {
+            projectRepository.deleteById(id);
+            // deleting ACL
+            ObjectIdentity objectIdentity = new ObjectIdentityImpl(Project.class.getName(), id);
+            aclService.deleteAcl(objectIdentity, true);
+        }
     }
 }

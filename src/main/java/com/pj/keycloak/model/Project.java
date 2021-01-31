@@ -1,9 +1,13 @@
 package com.pj.keycloak.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,6 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "project")
 @Data
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Project implements Serializable {
     private static final long serialVersionUID = -2482579485413606057L;
 
@@ -28,7 +33,9 @@ public class Project implements Serializable {
     @Column(name = "budget")
     private Double budget;
 
-    @ManyToMany(mappedBy = "projects")
+    @ManyToMany
+    @JoinTable(name = "employee_project", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    // @JsonManagedReference
     private Set<Employee> employees = new HashSet<>();
 
     public static Long getIdClase() {

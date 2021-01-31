@@ -41,6 +41,12 @@ export class KeycloakService
     return this.keycloakAuth.token;
   }
 
+  getAuthHeader(): string
+  {
+    const authToken = this.getToken() || "";
+    return "Bearer " + authToken;
+  }
+
   logout()
   {
     const options = {

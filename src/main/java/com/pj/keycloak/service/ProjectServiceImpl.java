@@ -30,11 +30,9 @@ public class ProjectServiceImpl implements ProjectService {
     private JdbcMutableAclService aclService;
 
     private final ProjectRepository projectRepository;
-    private final EmployeeRepository employeeRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository, EmployeeRepository employeeRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
-        this.employeeRepository = employeeRepository;
     }
 
     @Override

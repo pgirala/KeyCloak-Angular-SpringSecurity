@@ -49,34 +49,13 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project updateProfile(Project project) {
-        Project updatedProject = projectRepository.saveAndFlush(project);
-        // setting relationships
-        for (Employee employee : project.getEmployees()) {
-            Optional<Employee> persistentEmployee = employeeRepository.findById(employee.getId());
-            if (!persistentEmployee.isEmpty()) {
-                Employee relatedEmployee = persistentEmployee.get();
-                if (!relatedEmployee.getProjects().contains(updatedProject)) {
-                    relatedEmployee.getProjects().add(updatedProject);
-                    employeeRepository.saveAndFlush(relatedEmployee);
-                }
-            }
-        }
-        return updatedProject;
+        return projectRepository.saveAndFlush(project);
     }
 
     @Override
     public Project saveAndFlush(Project project, UserInfoUtil userInfoUtil) {
         project.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Project newProject = projectRepository.saveAndFlush(project);
-        // setting relationships
-        for (Employee employee : project.getEmployees()) {
-            Optional<Employee> persistentEmployee = employeeRepository.findById(employee.getId());
-            if (!persistentEmployee.isEmpty()) {
-                Employee relatedEmployee = persistentEmployee.get();
-                relatedEmployee.getProjects().add(newProject);
-                employeeRepository.saveAndFlush(relatedEmployee);
-            }
-        }
         // access control
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newProject.getClass().getName(), project.getId());
         MutableAcl mutableAcl = aclService.createAcl(objectIdentity);
@@ -99,19 +78,6 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteById(Long id) {
         Optional<Project> project = projectRepository.findById(id);
         if (!project.isEmpty()) {
-            Project persistentProject = project.get();
-            // updating relationships
-            for (Employee employee : persistentProject.getEmployees()) {
-                Optional<Employee> persistentEmployee = employeeRepository.findById(employee.getId());
-                if (!persistentEmployee.isEmpty()) {
-                    Employee relatedEmployee = persistentEmployee.get();
-                    if (relatedEmployee.getProjects().contains(persistentProject)) {
-                        relatedEmployee.getProjects().remove(persistentProject);
-                        employeeRepository.saveAndFlush(relatedEmployee);
-                    }
-                }
-            }
-            // deleting project
             projectRepository.deleteById(id);
             // deleting ACL
             ObjectIdentity objectIdentity = new ObjectIdentityImpl(Project.class.getName(), id);

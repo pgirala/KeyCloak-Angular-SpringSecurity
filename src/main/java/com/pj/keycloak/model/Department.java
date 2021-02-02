@@ -4,42 +4,36 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
+import java.util.Objects;
 
 @Entity
-@Table(name = "employee")
+@Table(name = "department")
 @Data
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Employee extends UserProfile implements Serializable {
-    private static final long serialVersionUID = -2482579485413606056L;
+public class Department implements Serializable {
+    private static final long serialVersionUID = -2482579485413606055L;
 
-    @Column(name = "employee_id")
-    private Long employeeId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(name = "location")
-    private String location;
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "salary")
-    private Double salary;
-
-    @ManyToOne
-    @JoinColumn(name = "department_id", nullable = true)
-    private Department department;
-
-    @ManyToMany(mappedBy = "employees")
-    @JsonBackReference
-    private Set<Project> projects = new HashSet<>();
+    @OneToMany(mappedBy = "department")
+    // @JsonManagedReference
+    private Set<Employee> employees = new HashSet<>();
 
     public static Long getIdClase() {
         // permitirá aplicar el control sobre la creación de instancias en las ACL
-        return Employee.serialVersionUID;
+        return Department.serialVersionUID;
     }
 
     @Override
@@ -50,8 +44,8 @@ public class Employee extends UserProfile implements Serializable {
             return false;
         if (!super.equals(o))
             return false;
-        Employee employee = (Employee) o;
-        return this.getId().equals(employee.getId());
+        Department department = (Department) o;
+        return getId().equals(department.getId());
     }
 
     @Override

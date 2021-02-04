@@ -49,10 +49,18 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department updateProfile(Department department) {
+        Department currentDepartment = this.departmentRepository.findById(department.getId()).get();
+
+        // elimina la relación con los anteriores empleados
+        for (Employee employee : currentDepartment.getEmployees()) {
+            employee.setDepartment(null);
+            this.employeeRepository.saveAndFlush(employee);
+        }
+
         Department updatedDepartment = departmentRepository.saveAndFlush(department);
 
         for (Employee employee : department.getEmployees())
-            if (this.employeeRepository.findById(employee.getId()).isPresent()) {
+            if (!this.employeeRepository.findById(employee.getId()).isEmpty()) {
                 Employee reasignedEmployee = this.employeeRepository.findById(employee.getId()).get();
                 reasignedEmployee.setDepartment(updatedDepartment);
                 this.employeeRepository.saveAndFlush(reasignedEmployee);
@@ -95,16 +103,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void deleteById(Long id) {
         Optional<Department> department = departmentRepository.findById(id);
         if (!department.isEmpty()) {
-            departmentRepository.deleteById(id);
-            if (!department.isEmpty()) {
-                Department departent2delete = department.get();
-                for (Employee employee : departent2delete.getEmployees())
-                    if (this.employeeRepository.findById(employee.getId()).isPresent()) {
-                        Employee reasignedEmployee = this.employeeRepository.findById(employee.getId()).get();
-                        reasignedEmployee.setDepartment(null);
-                        this.employeeRepository.saveAndFlush(reasignedEmployee);
-                    }
+            Department departent2delete = department.get();
+            for (Employee employee : departent2delete.getEmployees()) {
+                employee.setDepartment(null);
+                this.employeeRepository.saveAndFlush(employee);
             }
+            departmentRepository.deleteById(id);
             // deleting ACL
             ObjectIdentity objectIdentity = new ObjectIdentityImpl(Department.class.getName(), id);
             aclService.deleteAcl(objectIdentity, true);

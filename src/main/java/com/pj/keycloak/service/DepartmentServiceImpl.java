@@ -49,15 +49,30 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department updateProfile(Department department) {
-        // TODO: actualizar la relación de los empleados al departamento
-        return departmentRepository.saveAndFlush(department);
+        Department updatedDepartment = departmentRepository.saveAndFlush(department);
+
+        for (Employee employee : department.getEmployees())
+            if (this.employeeRepository.findById(employee.getId()).isPresent()) {
+                Employee reasignedEmployee = this.employeeRepository.findById(employee.getId()).get();
+                reasignedEmployee.setDepartment(updatedDepartment);
+                this.employeeRepository.saveAndFlush(reasignedEmployee);
+            }
+
+        return updatedDepartment;
     }
 
     @Override
     public Department saveAndFlush(Department department, UserInfoUtil userInfoUtil) {
         department.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Department newDepartment = departmentRepository.saveAndFlush(department);
-        // TODO: asociar los empleados al departamento
+
+        for (Employee employee : department.getEmployees())
+            if (this.employeeRepository.findById(employee.getId()).isPresent()) {
+                Employee reasignedEmployee = this.employeeRepository.findById(employee.getId()).get();
+                reasignedEmployee.setDepartment(newDepartment);
+                this.employeeRepository.saveAndFlush(reasignedEmployee);
+            }
+
         // access control
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newDepartment.getClass().getName(), department.getId());
         MutableAcl mutableAcl = aclService.createAcl(objectIdentity);
@@ -81,7 +96,15 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Department> department = departmentRepository.findById(id);
         if (!department.isEmpty()) {
             departmentRepository.deleteById(id);
-            // TODO: desasociar los empleados al departamento
+            if (!department.isEmpty()) {
+                Department departent2delete = department.get();
+                for (Employee employee : departent2delete.getEmployees())
+                    if (this.employeeRepository.findById(employee.getId()).isPresent()) {
+                        Employee reasignedEmployee = this.employeeRepository.findById(employee.getId()).get();
+                        reasignedEmployee.setDepartment(null);
+                        this.employeeRepository.saveAndFlush(reasignedEmployee);
+                    }
+            }
             // deleting ACL
             ObjectIdentity objectIdentity = new ObjectIdentityImpl(Department.class.getName(), id);
             aclService.deleteAcl(objectIdentity, true);

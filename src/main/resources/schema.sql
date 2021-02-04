@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `acl_class` (
   `class` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_acl_class` (`class`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `acl_entry` (
   KEY `fk_acl_entry_acl` (`sid`),
   CONSTRAINT `fk_acl_entry_acl` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`),
   CONSTRAINT `fk_acl_entry_object` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `acl_object_identity` (
   CONSTRAINT `fk_acl_object_identity_class` FOREIGN KEY (`object_id_class`) REFERENCES `acl_class` (`id`),
   CONSTRAINT `fk_acl_object_identity_owner` FOREIGN KEY (`owner_sid`) REFERENCES `acl_sid` (`id`),
   CONSTRAINT `fk_acl_object_identity_parent` FOREIGN KEY (`parent_object`) REFERENCES `acl_object_identity` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -71,6 +71,16 @@ CREATE TABLE IF NOT EXISTS `acl_sid` (
   `sid` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_acl_sid` (`sid`,`principal`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- La exportación de datos fue deseleccionada.
+
+-- Volcando estructura para tabla keycloak-springsecurity.department
+DROP TABLE IF EXISTS `department`;
+CREATE TABLE IF NOT EXISTS `department` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
@@ -82,8 +92,11 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `location` varchar(255) DEFAULT NULL,
   `salary` double DEFAULT NULL,
   `id` bigint NOT NULL,
+  `department_id` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_mc5x07dj0uft9opsxchp0uwji` (`employee_id`),
+  KEY `FKempdep` (`department_id`),
+  CONSTRAINT `FKempdep` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`),
   CONSTRAINT `FKhxa7usjunerh6kr5j5tm7kfau` FOREIGN KEY (`id`) REFERENCES `user_profile` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -114,6 +127,70 @@ CREATE TABLE `employee_project_view` (
 	`salary` DOUBLE NULL
 ) ENGINE=MyISAM;
 
+-- Volcando estructura para tabla keycloak-springsecurity.jv_commit
+DROP TABLE IF EXISTS `jv_commit`;
+CREATE TABLE IF NOT EXISTS `jv_commit` (
+  `commit_pk` bigint NOT NULL AUTO_INCREMENT,
+  `author` varchar(200) DEFAULT NULL,
+  `commit_date` timestamp(3) NULL DEFAULT NULL,
+  `commit_date_instant` varchar(30) DEFAULT NULL,
+  `commit_id` decimal(22,2) DEFAULT NULL,
+  PRIMARY KEY (`commit_pk`),
+  KEY `jv_commit_commit_id_idx` (`commit_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- La exportación de datos fue deseleccionada.
+
+-- Volcando estructura para tabla keycloak-springsecurity.jv_commit_property
+DROP TABLE IF EXISTS `jv_commit_property`;
+CREATE TABLE IF NOT EXISTS `jv_commit_property` (
+  `property_name` varchar(191) NOT NULL,
+  `property_value` varchar(600) DEFAULT NULL,
+  `commit_fk` bigint NOT NULL,
+  PRIMARY KEY (`commit_fk`,`property_name`),
+  KEY `jv_commit_property_commit_fk_idx` (`commit_fk`),
+  KEY `jv_commit_property_property_name_property_value_idx` (`property_name`,`property_value`(191)),
+  CONSTRAINT `jv_commit_property_commit_fk` FOREIGN KEY (`commit_fk`) REFERENCES `jv_commit` (`commit_pk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- La exportación de datos fue deseleccionada.
+
+-- Volcando estructura para tabla keycloak-springsecurity.jv_global_id
+DROP TABLE IF EXISTS `jv_global_id`;
+CREATE TABLE IF NOT EXISTS `jv_global_id` (
+  `global_id_pk` bigint NOT NULL AUTO_INCREMENT,
+  `local_id` varchar(191) DEFAULT NULL,
+  `fragment` varchar(200) DEFAULT NULL,
+  `type_name` varchar(200) DEFAULT NULL,
+  `owner_id_fk` bigint DEFAULT NULL,
+  PRIMARY KEY (`global_id_pk`),
+  KEY `jv_global_id_local_id_idx` (`local_id`),
+  KEY `jv_global_id_owner_id_fk_idx` (`owner_id_fk`),
+  CONSTRAINT `jv_global_id_owner_id_fk` FOREIGN KEY (`owner_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`)
+) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- La exportación de datos fue deseleccionada.
+
+-- Volcando estructura para tabla keycloak-springsecurity.jv_snapshot
+DROP TABLE IF EXISTS `jv_snapshot`;
+CREATE TABLE IF NOT EXISTS `jv_snapshot` (
+  `snapshot_pk` bigint NOT NULL AUTO_INCREMENT,
+  `type` varchar(200) DEFAULT NULL,
+  `version` bigint DEFAULT NULL,
+  `state` text,
+  `changed_properties` text,
+  `managed_type` varchar(200) DEFAULT NULL,
+  `global_id_fk` bigint DEFAULT NULL,
+  `commit_fk` bigint DEFAULT NULL,
+  PRIMARY KEY (`snapshot_pk`),
+  KEY `jv_snapshot_global_id_fk_idx` (`global_id_fk`),
+  KEY `jv_snapshot_commit_fk_idx` (`commit_fk`),
+  CONSTRAINT `jv_snapshot_commit_fk` FOREIGN KEY (`commit_fk`) REFERENCES `jv_commit` (`commit_pk`),
+  CONSTRAINT `jv_snapshot_global_id_fk` FOREIGN KEY (`global_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`)
+) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- La exportación de datos fue deseleccionada.
+
 -- Volcando estructura para tabla keycloak-springsecurity.project
 DROP TABLE IF EXISTS `project`;
 CREATE TABLE IF NOT EXISTS `project` (
@@ -122,7 +199,7 @@ CREATE TABLE IF NOT EXISTS `project` (
   `location` varchar(255) DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -136,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   `phone` varchar(255) DEFAULT NULL,
   `user_guid` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 

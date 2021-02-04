@@ -1,7 +1,8 @@
 {
   "id": "spring-boot-quickstart",
   "realm": "spring-boot-quickstart",
-  "notBefore": 1610987429,
+  "displayName": "form.io + Keycloak + JAVERS test application",
+  "notBefore": 1611925282,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
   "accessTokenLifespan": 300,
@@ -892,6 +893,16 @@
         "policyEnforcementMode": "ENFORCING",
         "resources": [
           {
+            "name": "Departamentos",
+            "ownerManagedAccess": false,
+            "displayName": "Departamentos",
+            "attributes": {},
+            "_id": "084543b5-07d0-4f45-b006-7dc452c6a4f0",
+            "uris": [
+              "/api/v1/department/*"
+            ]
+          },
+          {
             "name": "Proyectos",
             "ownerManagedAccess": false,
             "displayName": "Proyectos",
@@ -1017,7 +1028,7 @@
             "description": "A permission that applies to the default resource type",
             "type": "resource",
             "logic": "POSITIVE",
-            "decisionStrategy": "CONSENSUS",
+            "decisionStrategy": "UNANIMOUS",
             "config": {
               "defaultResourceType": "urn:hola:resources:default",
               "applyPolicies": "[\"Default Policy\",\"Denegación\"]"
@@ -1032,6 +1043,18 @@
             "decisionStrategy": "AFFIRMATIVE",
             "config": {
               "resources": "[\"Auditoría\"]",
+              "applyPolicies": "[\"Administradores\",\"Gestores\"]"
+            }
+          },
+          {
+            "id": "c1afa27a-8584-4f4f-82b4-01d0f000212a",
+            "name": "Acceso a departamentos",
+            "description": "Acceso a departamentos",
+            "type": "resource",
+            "logic": "POSITIVE",
+            "decisionStrategy": "AFFIRMATIVE",
+            "config": {
+              "resources": "[\"Departamentos\"]",
               "applyPolicies": "[\"Administradores\",\"Gestores\"]"
             }
           },
@@ -1625,6 +1648,7 @@
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
   "smtpServer": {},
+  "loginTheme": "keycloak",
   "eventsEnabled": false,
   "eventsListeners": [
     "jboss-logging"
@@ -1780,7 +1804,9 @@
     ]
   },
   "internationalizationEnabled": false,
-  "supportedLocales": [],
+  "supportedLocales": [
+    ""
+  ],
   "authenticationFlows": [
     {
       "id": "783a5e6e-3902-479e-b733-351980a022ec",
@@ -2393,7 +2419,12 @@
   "resetCredentialsFlow": "reset credentials",
   "clientAuthenticationFlow": "clients",
   "dockerAuthenticationFlow": "docker auth",
-  "attributes": {},
+  "attributes": {
+    "clientOfflineSessionMaxLifespan": "0",
+    "clientSessionIdleTimeout": "0",
+    "clientSessionMaxLifespan": "0",
+    "clientOfflineSessionIdleTimeout": "0"
+  },
   "keycloakVersion": "11.0.3",
   "userManagedAccessAllowed": false
 }

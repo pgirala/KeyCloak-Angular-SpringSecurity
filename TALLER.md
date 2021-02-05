@@ -14,5 +14,6 @@ Backend (API REST) Esta parte puede saltarse en el taller:
 Frontend:
 
 - Lista de departamentos, servicio y modelo. Esta parte puede saltarse en el taller.
+
 - Diseño del formulario.
 - Componente: detalle de departamento.

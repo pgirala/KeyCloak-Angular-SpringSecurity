@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `acl_class` (
   `class` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uk_acl_class` (`class`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `acl_entry` (
   KEY `fk_acl_entry_acl` (`sid`),
   CONSTRAINT `fk_acl_entry_acl` FOREIGN KEY (`sid`) REFERENCES `acl_sid` (`id`),
   CONSTRAINT `fk_acl_entry_object` FOREIGN KEY (`acl_object_identity`) REFERENCES `acl_object_identity` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=226 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `acl_object_identity` (
   CONSTRAINT `fk_acl_object_identity_class` FOREIGN KEY (`object_id_class`) REFERENCES `acl_class` (`id`),
   CONSTRAINT `fk_acl_object_identity_owner` FOREIGN KEY (`owner_sid`) REFERENCES `acl_sid` (`id`),
   CONSTRAINT `fk_acl_object_identity_parent` FOREIGN KEY (`parent_object`) REFERENCES `acl_object_identity` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `department` (
   `id` bigint NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -93,11 +93,14 @@ CREATE TABLE IF NOT EXISTS `employee` (
   `salary` double DEFAULT NULL,
   `id` bigint NOT NULL,
   `department_id` bigint DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_mc5x07dj0uft9opsxchp0uwji` (`employee_id`),
   KEY `FKempdep` (`department_id`),
-  CONSTRAINT `FKempdep` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`),
-  CONSTRAINT `FKhxa7usjunerh6kr5j5tm7kfau` FOREIGN KEY (`id`) REFERENCES `user_profile` (`id`)
+  CONSTRAINT `FKempdep` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
@@ -137,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `jv_commit` (
   `commit_id` decimal(22,2) DEFAULT NULL,
   PRIMARY KEY (`commit_pk`),
   KEY `jv_commit_commit_id_idx` (`commit_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=168 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -167,7 +170,7 @@ CREATE TABLE IF NOT EXISTS `jv_global_id` (
   KEY `jv_global_id_local_id_idx` (`local_id`),
   KEY `jv_global_id_owner_id_fk_idx` (`owner_id_fk`),
   CONSTRAINT `jv_global_id_owner_id_fk` FOREIGN KEY (`owner_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=88 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -187,7 +190,7 @@ CREATE TABLE IF NOT EXISTS `jv_snapshot` (
   KEY `jv_snapshot_commit_fk_idx` (`commit_fk`),
   CONSTRAINT `jv_snapshot_commit_fk` FOREIGN KEY (`commit_fk`) REFERENCES `jv_commit` (`commit_pk`),
   CONSTRAINT `jv_snapshot_global_id_fk` FOREIGN KEY (`global_id_fk`) REFERENCES `jv_global_id` (`global_id_pk`)
-) ENGINE=InnoDB AUTO_INCREMENT=205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- La exportación de datos fue deseleccionada.
 
@@ -203,25 +206,11 @@ CREATE TABLE IF NOT EXISTS `project` (
 
 -- La exportación de datos fue deseleccionada.
 
--- Volcando estructura para tabla keycloak-springsecurity.user_profile
-DROP TABLE IF EXISTS `user_profile`;
-CREATE TABLE IF NOT EXISTS `user_profile` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) DEFAULT NULL,
-  `first_name` varchar(255) DEFAULT NULL,
-  `last_name` varchar(255) DEFAULT NULL,
-  `phone` varchar(255) DEFAULT NULL,
-  `user_guid` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- La exportación de datos fue deseleccionada.
-
 -- Volcando estructura para vista keycloak-springsecurity.employee_project_view
 DROP VIEW IF EXISTS `employee_project_view`;
 -- Eliminando tabla temporal y crear estructura final de VIEW
 DROP TABLE IF EXISTS `employee_project_view`;
-CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `employee_project_view` AS select `E`.`id` AS `employee_id`,`UP`.`first_name` AS `first_name`,`UP`.`last_name` AS `last_name`,`P`.`location` AS `project_location`,`P`.`name` AS `project_name`,`E`.`salary` AS `salary` from (((`employee` `E` join `user_profile` `UP` on((`E`.`id` = `UP`.`id`))) join `employee_project` `EP` on((`E`.`id` = `EP`.`employee_id`))) join `project` `P` on((`P`.`id` = `EP`.`project_id`)));
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `employee_project_view` AS select `E`.`id` AS `employee_id`,`E`.`first_name` AS `first_name`,`E`.`last_name` AS `last_name`,`P`.`location` AS `project_location`,`P`.`name` AS `project_name`,`E`.`salary` AS `salary` from ((`employee` `E` join `employee_project` `EP` on((`E`.`id` = `EP`.`employee_id`))) join `project` `P` on((`P`.`id` = `EP`.`project_id`)));
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

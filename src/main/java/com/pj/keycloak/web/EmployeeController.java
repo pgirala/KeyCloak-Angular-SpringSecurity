@@ -39,7 +39,6 @@ public class EmployeeController {
 
     @PostMapping(path = "/update")
     public Employee update(@RequestBody Employee employee) {
-        employee.setUserGuid(userInfoUtil.getUserGuid());
         return employeeService.updateProfile(employee);
     }
 

@@ -12,7 +12,7 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- Volcando datos para la tabla keycloak-springsecurity.acl_class: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.acl_class: ~3 rows (aproximadamente)
 DELETE FROM `acl_class`;
 /*!40000 ALTER TABLE `acl_class` DISABLE KEYS */;
 INSERT INTO `acl_class` (`id`, `class`) VALUES
@@ -21,7 +21,7 @@ INSERT INTO `acl_class` (`id`, `class`) VALUES
 	(3, 'com.pj.keycloak.model.Project');
 /*!40000 ALTER TABLE `acl_class` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.acl_entry: ~22 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.acl_entry: ~36 rows (aproximadamente)
 DELETE FROM `acl_entry`;
 /*!40000 ALTER TABLE `acl_entry` DISABLE KEYS */;
 INSERT INTO `acl_entry` (`id`, `acl_object_identity`, `ace_order`, `sid`, `mask`, `granting`, `audit_success`, `audit_failure`) VALUES
@@ -49,15 +49,21 @@ INSERT INTO `acl_entry` (`id`, `acl_object_identity`, `ace_order`, `sid`, `mask`
 	(144, 37, 2, 13, 8, 1, 0, 0),
 	(145, 38, 1, 13, 4, 1, 1, 1),
 	(146, 38, 2, 15, 4, 1, 1, 1),
-	(208, 51, 0, 15, 1, 1, 0, 0),
-	(209, 51, 1, 15, 2, 1, 0, 0),
-	(210, 51, 2, 15, 8, 1, 0, 0),
-	(211, 51, 3, 13, 1, 1, 0, 0),
-	(212, 51, 4, 13, 2, 1, 0, 0),
-	(213, 51, 5, 13, 8, 1, 0, 0);
+	(214, 52, 0, 15, 1, 1, 0, 0),
+	(215, 52, 1, 15, 2, 1, 0, 0),
+	(216, 52, 2, 15, 8, 1, 0, 0),
+	(217, 52, 3, 13, 1, 1, 0, 0),
+	(218, 52, 4, 13, 2, 1, 0, 0),
+	(219, 52, 5, 13, 8, 1, 0, 0),
+	(220, 53, 0, 15, 1, 1, 0, 0),
+	(221, 53, 1, 15, 2, 1, 0, 0),
+	(222, 53, 2, 15, 8, 1, 0, 0),
+	(223, 53, 3, 13, 1, 1, 0, 0),
+	(224, 53, 4, 13, 2, 1, 0, 0),
+	(225, 53, 5, 13, 8, 1, 0, 0);
 /*!40000 ALTER TABLE `acl_entry` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.acl_object_identity: ~8 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.acl_object_identity: ~10 rows (aproximadamente)
 DELETE FROM `acl_object_identity`;
 /*!40000 ALTER TABLE `acl_object_identity` DISABLE KEYS */;
 INSERT INTO `acl_object_identity` (`id`, `object_id_class`, `object_id_identity`, `parent_object`, `owner_sid`, `entries_inheriting`) VALUES
@@ -69,10 +75,11 @@ INSERT INTO `acl_object_identity` (`id`, `object_id_class`, `object_id_identity`
 	(35, 3, '1', NULL, 1, 0),
 	(37, 3, '3', NULL, 1, 1),
 	(38, 4, '-2482579485413606055', NULL, 1, 0),
-	(51, 4, '3', NULL, 18, 1);
+	(52, 4, '6', NULL, 18, 1),
+	(53, 4, '7', NULL, 18, 1);
 /*!40000 ALTER TABLE `acl_object_identity` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.acl_sid: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.acl_sid: ~5 rows (aproximadamente)
 DELETE FROM `acl_sid`;
 /*!40000 ALTER TABLE `acl_sid` DISABLE KEYS */;
 INSERT INTO `acl_sid` (`id`, `principal`, `sid`) VALUES
@@ -83,23 +90,24 @@ INSERT INTO `acl_sid` (`id`, `principal`, `sid`) VALUES
 	(18, 1, 'sgpf0078');
 /*!40000 ALTER TABLE `acl_sid` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.department: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.department: ~2 rows (aproximadamente)
 DELETE FROM `department`;
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
 INSERT INTO `department` (`id`, `name`) VALUES
-	(3, 'RRRHHh');
+	(6, 'RRHH'),
+	(7, 'Financiero');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 
 -- Volcando datos para la tabla keycloak-springsecurity.employee: ~3 rows (aproximadamente)
 DELETE FROM `employee`;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` (`employee_id`, `location`, `salary`, `id`, `department_id`) VALUES
-	(22340, 'Valdemoro', 1000, 2, NULL),
-	(810965, 'Córdoba', 2000, 3, NULL),
-	(920247, 'El Molar', 2000, 48, 3);
+INSERT INTO `employee` (`employee_id`, `location`, `salary`, `id`, `department_id`, `email`, `first_name`, `last_name`, `phone`) VALUES
+	(22340, 'Valdemoro', 1000, 2, 6, 'pgirala@gmail.com', 'Pablo', 'Gálvez', '555-555-555'),
+	(810965, 'Córdoba', 2000, 3, NULL, 'lranchal@gmail.com', 'Luis', 'Ranchal', '555-555-555'),
+	(920247, 'El Molar', 2000, 48, 7, 'alagunas@gmail.com', 'Alberto', 'Lagunas', '555-555-555');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.employee_project: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.employee_project: ~3 rows (aproximadamente)
 DELETE FROM `employee_project`;
 /*!40000 ALTER TABLE `employee_project` DISABLE KEYS */;
 INSERT INTO `employee_project` (`employee_id`, `project_id`) VALUES
@@ -108,7 +116,7 @@ INSERT INTO `employee_project` (`employee_id`, `project_id`) VALUES
 	(48, 3);
 /*!40000 ALTER TABLE `employee_project` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.jv_commit: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.jv_commit: ~28 rows (aproximadamente)
 DELETE FROM `jv_commit`;
 /*!40000 ALTER TABLE `jv_commit` DISABLE KEYS */;
 INSERT INTO `jv_commit` (`commit_pk`, `author`, `commit_date`, `commit_date_instant`, `commit_id`) VALUES
@@ -133,7 +141,13 @@ INSERT INTO `jv_commit` (`commit_pk`, `author`, `commit_date`, `commit_date_inst
 	(180, 'sgpf0078', '2021-02-04 18:07:14.939', '2021-02-04T18:07:14.939237800Z', 19.00),
 	(181, 'sgpf0078', '2021-02-04 18:07:15.083', '2021-02-04T18:07:15.083240200Z', 20.00),
 	(182, 'sgpf0078', '2021-02-04 18:07:15.155', '2021-02-04T18:07:15.155235600Z', 21.00),
-	(183, 'sgpf0078', '2021-02-04 18:07:15.289', '2021-02-04T18:07:15.289238100Z', 22.00);
+	(183, 'sgpf0078', '2021-02-04 18:07:15.289', '2021-02-04T18:07:15.289238100Z', 22.00),
+	(184, 'sgpf0078', '2021-02-04 20:07:36.604', '2021-02-04T20:07:36.604963900Z', 23.00),
+	(185, 'sgpf0078', '2021-02-04 20:07:36.923', '2021-02-04T20:07:36.923957500Z', 24.00),
+	(186, 'sgpf0078', '2021-02-05 07:44:17.487', '2021-02-05T07:44:17.487814700Z', 25.00),
+	(187, 'sgpf0078', '2021-02-05 07:44:18.225', '2021-02-05T07:44:18.225713700Z', 26.00),
+	(188, 'sgpf0078', '2021-02-05 07:44:50.914', '2021-02-05T07:44:50.914030400Z', 27.00),
+	(189, 'sgpf0078', '2021-02-05 07:44:51.046', '2021-02-05T07:44:51.046044800Z', 28.00);
 /*!40000 ALTER TABLE `jv_commit` ENABLE KEYS */;
 
 -- Volcando datos para la tabla keycloak-springsecurity.jv_commit_property: ~0 rows (aproximadamente)
@@ -141,7 +155,7 @@ DELETE FROM `jv_commit_property`;
 /*!40000 ALTER TABLE `jv_commit_property` DISABLE KEYS */;
 /*!40000 ALTER TABLE `jv_commit_property` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.jv_global_id: ~7 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.jv_global_id: ~11 rows (aproximadamente)
 DELETE FROM `jv_global_id`;
 /*!40000 ALTER TABLE `jv_global_id` DISABLE KEYS */;
 INSERT INTO `jv_global_id` (`global_id_pk`, `local_id`, `fragment`, `type_name`, `owner_id_fk`) VALUES
@@ -153,10 +167,12 @@ INSERT INTO `jv_global_id` (`global_id_pk`, `local_id`, `fragment`, `type_name`,
 	(82, '54', NULL, 'com.pj.keycloak.model.Employee', NULL),
 	(83, '55', NULL, 'com.pj.keycloak.model.Employee', NULL),
 	(84, '2', NULL, 'com.pj.keycloak.model.Department', NULL),
-	(85, '3', NULL, 'com.pj.keycloak.model.Department', NULL);
+	(85, '3', NULL, 'com.pj.keycloak.model.Department', NULL),
+	(86, '6', NULL, 'com.pj.keycloak.model.Department', NULL),
+	(87, '7', NULL, 'com.pj.keycloak.model.Department', NULL);
 /*!40000 ALTER TABLE `jv_global_id` ENABLE KEYS */;
 
--- Volcando datos para la tabla keycloak-springsecurity.jv_snapshot: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla keycloak-springsecurity.jv_snapshot: ~34 rows (aproximadamente)
 DELETE FROM `jv_snapshot`;
 /*!40000 ALTER TABLE `jv_snapshot` DISABLE KEYS */;
 INSERT INTO `jv_snapshot` (`snapshot_pk`, `type`, `version`, `state`, `changed_properties`, `managed_type`, `global_id_fk`, `commit_fk`) VALUES
@@ -185,7 +201,15 @@ INSERT INTO `jv_snapshot` (`snapshot_pk`, `type`, `version`, `state`, `changed_p
 	(221, 'UPDATE', 3, '{\n  "name": "RRRHHh",\n  "id": 3,\n  "employees": [\n    {\n      "entity": "com.pj.keycloak.model.Employee",\n      "cdoId": 48\n    },\n    {\n      "entity": "com.pj.keycloak.model.Employee",\n      "cdoId": 2\n    }\n  ]\n}', '[\n  "employees"\n]', 'com.pj.keycloak.model.Department', 85, 180),
 	(222, 'UPDATE', 7, '{\n  "firstName": "Alberto",\n  "lastName": "Lagunas",\n  "projects": [\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 1\n    },\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 3\n    }\n  ],\n  "phone": "302-345-2333",\n  "employeeId": 920247,\n  "location": "El Molar",\n  "id": 48,\n  "salary": 2000.0,\n  "userGuid": "7a5f008b-bda7-4e64-9ede-545a580369d0",\n  "email": "alagunas@gmail.com"\n}', '[\n  "department"\n]', 'com.pj.keycloak.model.Employee', 77, 181),
 	(223, 'UPDATE', 4, '{\n  "name": "RRRHHh",\n  "id": 3,\n  "employees": [\n    {\n      "entity": "com.pj.keycloak.model.Employee",\n      "cdoId": 48\n    }\n  ]\n}', '[\n  "employees"\n]', 'com.pj.keycloak.model.Department', 85, 182),
-	(224, 'UPDATE', 8, '{\n  "firstName": "Alberto",\n  "lastName": "Lagunas",\n  "projects": [\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 1\n    },\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 3\n    }\n  ],\n  "phone": "302-345-2333",\n  "employeeId": 920247,\n  "location": "El Molar",\n  "id": 48,\n  "salary": 2000.0,\n  "department": {\n    "entity": "com.pj.keycloak.model.Department",\n    "cdoId": 3\n  },\n  "userGuid": "7a5f008b-bda7-4e64-9ede-545a580369d0",\n  "email": "alagunas@gmail.com"\n}', '[\n  "department"\n]', 'com.pj.keycloak.model.Employee', 77, 183);
+	(224, 'UPDATE', 8, '{\n  "firstName": "Alberto",\n  "lastName": "Lagunas",\n  "projects": [\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 1\n    },\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 3\n    }\n  ],\n  "phone": "302-345-2333",\n  "employeeId": 920247,\n  "location": "El Molar",\n  "id": 48,\n  "salary": 2000.0,\n  "department": {\n    "entity": "com.pj.keycloak.model.Department",\n    "cdoId": 3\n  },\n  "userGuid": "7a5f008b-bda7-4e64-9ede-545a580369d0",\n  "email": "alagunas@gmail.com"\n}', '[\n  "department"\n]', 'com.pj.keycloak.model.Employee', 77, 183),
+	(225, 'UPDATE', 9, '{\n  "firstName": "Alberto",\n  "lastName": "Lagunas",\n  "projects": [\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 1\n    },\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 3\n    }\n  ],\n  "phone": "302-345-2333",\n  "employeeId": 920247,\n  "location": "El Molar",\n  "id": 48,\n  "salary": 2000.0,\n  "userGuid": "7a5f008b-bda7-4e64-9ede-545a580369d0",\n  "email": "alagunas@gmail.com"\n}', '[\n  "department"\n]', 'com.pj.keycloak.model.Employee', 77, 184),
+	(226, 'TERMINAL', 5, '{}', '[]', 'com.pj.keycloak.model.Department', 85, 185),
+	(227, 'INITIAL', 1, '{\n  "name": "RRHH",\n  "id": 6,\n  "employees": [\n    {\n      "entity": "com.pj.keycloak.model.Employee",\n      "cdoId": 2\n    }\n  ]\n}', '[\n  "name",\n  "id",\n  "employees"\n]', 'com.pj.keycloak.model.Department', 86, 186),
+	(228, 'UPDATE', 9, '{\n  "projects": [],\n  "id": 2\n}', '[\n  "projects",\n  "firstName",\n  "lastName",\n  "phone",\n  "employeeId",\n  "location",\n  "salary",\n  "userGuid",\n  "email"\n]', 'com.pj.keycloak.model.Employee', 79, 186),
+	(229, 'UPDATE', 10, '{\n  "firstName": "Pablo",\n  "lastName": "Gálvez Irala",\n  "projects": [\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 3\n    }\n  ],\n  "phone": "555-555-5555",\n  "employeeId": 22340,\n  "location": "Valdemoro",\n  "id": 2,\n  "salary": 1000.0,\n  "department": {\n    "entity": "com.pj.keycloak.model.Department",\n    "cdoId": 6\n  },\n  "userGuid": "7a5f008b-bda7-4e64-9ede-545a580369d0",\n  "email": "pgirala@gmail.com"\n}', '[\n  "projects",\n  "firstName",\n  "lastName",\n  "phone",\n  "employeeId",\n  "location",\n  "salary",\n  "department",\n  "userGuid",\n  "email"\n]', 'com.pj.keycloak.model.Employee', 79, 187),
+	(230, 'UPDATE', 10, '{\n  "projects": [],\n  "id": 48\n}', '[\n  "projects",\n  "firstName",\n  "lastName",\n  "phone",\n  "employeeId",\n  "location",\n  "salary",\n  "userGuid",\n  "email"\n]', 'com.pj.keycloak.model.Employee', 77, 188),
+	(231, 'INITIAL', 1, '{\n  "name": "Financiero",\n  "id": 7,\n  "employees": [\n    {\n      "entity": "com.pj.keycloak.model.Employee",\n      "cdoId": 48\n    }\n  ]\n}', '[\n  "name",\n  "id",\n  "employees"\n]', 'com.pj.keycloak.model.Department', 87, 188),
+	(232, 'UPDATE', 11, '{\n  "firstName": "Alberto",\n  "lastName": "Lagunas",\n  "projects": [\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 1\n    },\n    {\n      "entity": "com.pj.keycloak.model.Project",\n      "cdoId": 3\n    }\n  ],\n  "phone": "302-345-2333",\n  "employeeId": 920247,\n  "location": "El Molar",\n  "id": 48,\n  "salary": 2000.0,\n  "department": {\n    "entity": "com.pj.keycloak.model.Department",\n    "cdoId": 7\n  },\n  "userGuid": "7a5f008b-bda7-4e64-9ede-545a580369d0",\n  "email": "alagunas@gmail.com"\n}', '[\n  "projects",\n  "firstName",\n  "lastName",\n  "phone",\n  "employeeId",\n  "location",\n  "salary",\n  "department",\n  "userGuid",\n  "email"\n]', 'com.pj.keycloak.model.Employee', 77, 189);
 /*!40000 ALTER TABLE `jv_snapshot` ENABLE KEYS */;
 
 -- Volcando datos para la tabla keycloak-springsecurity.project: ~2 rows (aproximadamente)
@@ -195,15 +219,6 @@ INSERT INTO `project` (`id`, `budget`, `location`, `name`) VALUES
 	(1, 200000, 'Madrid', 'CoFFEE'),
 	(3, 10, 'Madrid', 'ATENEA');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
-
--- Volcando datos para la tabla keycloak-springsecurity.user_profile: ~5 rows (aproximadamente)
-DELETE FROM `user_profile`;
-/*!40000 ALTER TABLE `user_profile` DISABLE KEYS */;
-INSERT INTO `user_profile` (`id`, `email`, `first_name`, `last_name`, `phone`, `user_guid`) VALUES
-	(2, 'pgirala@gmail.com', 'Pablo', 'Gálvez Irala', '555-555-5555', '7a5f008b-bda7-4e64-9ede-545a580369d0'),
-	(3, 'lranchal@gmail.com', 'Luis', 'Ranchal', '202-345-2333', '7a5f008b-bda7-4e64-9ede-545a580369d0'),
-	(48, 'alagunas@gmail.com', 'Alberto', 'Lagunas', '302-345-2333', '7a5f008b-bda7-4e64-9ede-545a580369d0');
-/*!40000 ALTER TABLE `user_profile` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

@@ -1,3 +1,5 @@
+import { Department } from "../department-list/department";
+
 export class Employee
 {
   id: number;
@@ -8,4 +10,5 @@ export class Employee
   employeeId: number;
   location: string;
   salary: number;
+  department: Department;
 }

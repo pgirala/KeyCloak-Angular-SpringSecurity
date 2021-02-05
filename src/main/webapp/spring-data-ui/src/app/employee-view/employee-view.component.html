@@ -4,4 +4,11 @@
 
 <br/> <br/>
 <div class="container container-fluid">
+  <formio [form]="myForm"
+    (change)="onChange($event)"
+    (submit)="onSubmit($event)"
+    [refresh]="triggerRefresh"
+    [readOnly]="readOnly"
+    [submission]="firstSubmission">
+  </formio>
 </div>

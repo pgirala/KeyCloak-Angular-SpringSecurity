@@ -23,39 +23,33 @@ import org.springframework.security.acls.domain.GrantedAuthoritySid;
 import com.pj.keycloak.util.UserInfoUtil;
 
 @Service
-public class EmployeeServiceImpl implements EmployeeService
-{
+public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private JdbcMutableAclService aclService;
 
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository)
-    {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public List<Employee> findAll()
-    {
+    public List<Employee> findAll() {
         return employeeRepository.findAll();
     }
 
     @Override
-    public Optional<Employee> findById(Long id)
-    {
+    public Optional<Employee> findById(Long id) {
         return employeeRepository.findById(id);
     }
 
     @Override
-    public Employee updateProfile(Employee employee)
-    {
+    public Employee updateProfile(Employee employee) {
         return employeeRepository.saveAndFlush(employee);
     }
 
     @Override
-    public void saveAndFlush(Employee employee, UserInfoUtil userInfoUtil)
-    {
+    public Employee saveAndFlush(Employee employee, UserInfoUtil userInfoUtil) {
         employee.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Employee newEmployee = employeeRepository.saveAndFlush(employee);
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newEmployee.getClass().getName(), employee.getId());
@@ -63,21 +57,21 @@ public class EmployeeServiceImpl implements EmployeeService
         // Now let's add a couple of permissions
         int i = 0;
 
-        for(String rol : userInfoUtil.getRoles()) {
+        for (String rol : userInfoUtil.getRoles()) {
             mutableAcl.insertAce(i++, BasePermission.READ, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.WRITE, new GrantedAuthoritySid(rol), true);
             mutableAcl.insertAce(i++, BasePermission.DELETE, new GrantedAuthoritySid(rol), true);
-       }
-       
-		// Explicitly save the changed ACL
-		aclService.updateAcl(mutableAcl);   
+        }
+
+        // Explicitly save the changed ACL
+        aclService.updateAcl(mutableAcl);
+        return newEmployee;
     }
 
     @Override
-    public void deleteById(Long id)
-    {
+    public void deleteById(Long id) {
         employeeRepository.deleteById(id);
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(Employee.class.getName(), id);
         aclService.deleteAcl(objectIdentity, true);
-     }
+    }
 }

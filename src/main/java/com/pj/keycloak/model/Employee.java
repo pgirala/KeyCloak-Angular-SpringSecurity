@@ -46,6 +46,7 @@ public class Employee implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "department_id", nullable = true)
+    @JsonBackReference
     private Department department;
 
     @ManyToMany(mappedBy = "employees")

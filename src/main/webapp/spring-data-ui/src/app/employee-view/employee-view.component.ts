@@ -188,10 +188,13 @@ export class EmployeeViewComponent implements OnInit
     employee.phone = dataView.phone;
     employee.location = dataView.location;
     employee.salary = dataView.salary;
+
     if (dataView.department) {
       let department = new Department();
       department.id = dataView.department;
+      employee.department = department;
     }
+
     return employee;
   }
 

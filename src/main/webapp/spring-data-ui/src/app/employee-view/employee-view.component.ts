@@ -61,6 +61,13 @@ export class EmployeeViewComponent implements OnInit
                   "input": true
                 },
                 {
+                  "label": "Email",
+                  "tableView": true,
+                  "key": "email",
+                  "type": "textfield",
+                  "input": true
+                },
+                {
                   "label": "Phone",
                   "tableView": true,
                   "key": "phone",
@@ -75,11 +82,11 @@ export class EmployeeViewComponent implements OnInit
                   "input": true
                 },
                 {
-                    "label": "Salary",
-                    "tableView": true,
-                    "key": "salary",
-                    "type": "textfield",
-                    "input": true
+                  "label": "Salary",
+                  "tableView": true,
+                  "key": "salary",
+                  "type": "textfield",
+                  "input": true
                 }
             ]
         },
@@ -133,6 +140,7 @@ export class EmployeeViewComponent implements OnInit
               + '"employeeId":"' + data.employeeId + '", '
               + '"firstName":"' + data.firstName + '", '
               + '"lastName":"' + data.lastName + '", '
+              + '"email":"' + data.email + '", '
               + '"phone":"' + data.phone + '", '
               + '"location":"' + data.location + '", '
               + '"salary":"' + data.salary + '"}'
@@ -146,6 +154,7 @@ export class EmployeeViewComponent implements OnInit
     employee.employeeId = dataView.employeeId;
     employee.firstName = dataView.firstName;
     employee.lastName = dataView.lastName;
+    employee.email = dataView.email;
     employee.phone = dataView.phone;
     employee.location = dataView.location;
     employee.salary = dataView.salary;

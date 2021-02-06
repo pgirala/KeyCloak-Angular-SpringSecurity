@@ -87,6 +87,33 @@ export class EmployeeViewComponent implements OnInit
                   "key": "salary",
                   "type": "textfield",
                   "input": true
+                },
+                {
+                  "label": "Department",
+                  "widget": "choicesjs",
+                  "uniqueOptions": true,
+                  "tableView": true,
+                  "multiple": false,
+                  "dataSrc": "url",
+                  "data": {
+                    "url": "http://localhost:8010/proxy/api/v1/department/list",
+                    "headers": [
+                      {
+                        "key": "Authorization",
+                        "value": "{{ data.token }}"
+                      }
+                    ]
+                  },
+                  "valueProperty": "id",
+                  "template": "<span>{{ item.name }}</span>",
+                  "selectThreshold": 0.3,
+                  "key": "department",
+                  "type": "select",
+                  "indexeddb": {
+                    "filter": {}
+                  },
+                  "uniqueValues": true,
+                  "input": true
                 }
             ]
         },
@@ -143,7 +170,10 @@ export class EmployeeViewComponent implements OnInit
               + '"email":"' + data.email + '", '
               + '"phone":"' + data.phone + '", '
               + '"location":"' + data.location + '", '
-              + '"salary":"' + data.salary + '"}'
+              + '"salary":"' + data.salary + '"';
+    if (data.department)
+              result = result + ', "department":' + data.department.id;
+    result = result + '}';
     return result
   }
 
@@ -158,6 +188,10 @@ export class EmployeeViewComponent implements OnInit
     employee.phone = dataView.phone;
     employee.location = dataView.location;
     employee.salary = dataView.salary;
+    if (dataView.department) {
+      let department = new Department();
+      department.id = dataView.department;
+    }
     return employee;
   }
 

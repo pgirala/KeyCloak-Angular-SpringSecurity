@@ -11,8 +11,7 @@ import java.util.Optional;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
-public interface EmployeeService
-{
+public interface EmployeeService {
     @PostFilter("hasPermission(filterObject, 'READ')")
     List<Employee> findAll();
 
@@ -23,7 +22,7 @@ public interface EmployeeService
     Employee updateProfile(Employee employee);
 
     @PreAuthorize("hasPermission(#employee, 'CREATE')")
-    void saveAndFlush(Employee employee, UserInfoUtil userInfoUtil);
+    Employee saveAndFlush(Employee employee, UserInfoUtil userInfoUtil);
 
     @PreAuthorize("hasPermission(#id,'com.pj.keycloak.model.Employee', 'DELETE')")
     void deleteById(Long id);

@@ -49,28 +49,7 @@ export class EmployeeListComponent implements OnInit
 
   createEmployee()
   {
-    this.ngxSpinnerService.show();
-    let employee=new Employee();
-    employee.employeeId=1001;
-    employee.location='(location)';
-    employee.salary=0.0;
-    employee.email='(email)';
-    employee.firstName='(name)';
-    employee.lastName='(surname)';
-    employee.phone='(phone)';
-
-
-    this.employeeService.createEmployee('http://localhost:8010/proxy/api/v1/employee/create',employee).subscribe(
-      data=>
-      {
-        this.employees=data;
-        this.ngxSpinnerService.hide();
-      },
-      error1 =>
-      {
-        this.ngxSpinnerService.hide();
-      }
-    );
+    this.router.navigate(["/employee"], { queryParams: { editMode: 'true' } });
   }
 
   deleteEmployee(id: number)
@@ -89,7 +68,6 @@ export class EmployeeListComponent implements OnInit
 
   editEmployee(id: number)
   {
-    this.router.navigate(["/employee/" + id, { editMode: true }
-    ]);
+    this.router.navigate(["/employee/" + id], { queryParams: { editMode: 'true' } });
   }
 }

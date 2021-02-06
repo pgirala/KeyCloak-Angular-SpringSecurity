@@ -5,6 +5,8 @@ import {EmployeeListComponent} from "./employee-list/employee-list.component";
 import {EmployeeProjectComponent} from "./employee-project/employee-project.component";
 import {ProjectViewComponent} from "src/app/project-view/project-view.component";
 import {ProjectListComponent} from "./project-list/project-list.component";
+import {DepartmentViewComponent} from "src/app/department-view/department-view.component";
+import {DepartmentListComponent} from "./department-list/department-list.component";
 import {LogoutComponent} from "./logout/logout.component";
 
 const routes: Routes = [
@@ -14,6 +16,10 @@ const routes: Routes = [
   },
   {
     path: 'employee/:id',
+    component: EmployeeViewComponent
+  },
+  {
+    path: 'employee',
     component: EmployeeViewComponent
   },
   {
@@ -31,6 +37,18 @@ const routes: Routes = [
   {
     path: 'project',
     component: ProjectViewComponent
+  },
+  {
+    path: 'department/list',
+    component: DepartmentListComponent
+  },
+  {
+    path: 'department/:id',
+    component: DepartmentViewComponent
+  },
+  {
+    path: 'department',
+    component: DepartmentViewComponent
   },
   {
     path: 'logout',

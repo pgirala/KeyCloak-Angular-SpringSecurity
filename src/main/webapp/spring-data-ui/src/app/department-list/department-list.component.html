@@ -1,0 +1,39 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" color="#fff" size="medium" type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
+
+<div class="container container-fluid">
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody *ngFor="let department of departments">
+    <tr>
+      <td> <a routerLink="/department/{{department.id}}"  [queryParams]="{editMode: false}">{{department.id}}</a></td>
+      <td>{{department.name}}</td>
+      <td>
+        <button (click)="editDepartment(department.id)" class="btn btn-primary" style="margin-right: 10px">Edit</button>
+        <button (click)="deleteDepartment(department.id)" class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <br/>
+  <div class="container container-fluid">
+    <h5>
+      <table>
+        <tr>
+          <td>
+            <button (click)="createDepartment()" class="btn btn-primary"> Create</button>
+          </td>
+          <td>
+            <button [routerLink]="['/']" class="btn btn-primary">Back</button>
+          </td>
+        </tr>
+      </table>
+    </h5>
+  </div>

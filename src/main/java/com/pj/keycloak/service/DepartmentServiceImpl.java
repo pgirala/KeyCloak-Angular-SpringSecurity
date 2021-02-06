@@ -49,37 +49,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department updateProfile(Department department) {
-        Department currentDepartment = this.departmentRepository.findById(department.getId()).get();
-
-        // elimina la relación con los anteriores empleados
-        for (Employee employee : currentDepartment.getEmployees()) {
-            employee.setDepartment(null);
-            this.employeeRepository.saveAndFlush(employee);
-        }
-
-        Department updatedDepartment = departmentRepository.saveAndFlush(department);
-
-        for (Employee employee : department.getEmployees())
-            if (!this.employeeRepository.findById(employee.getId()).isEmpty()) {
-                Employee reasignedEmployee = this.employeeRepository.findById(employee.getId()).get();
-                reasignedEmployee.setDepartment(updatedDepartment);
-                this.employeeRepository.saveAndFlush(reasignedEmployee);
-            }
-
-        return updatedDepartment;
+        return departmentRepository.saveAndFlush(department);
     }
 
     @Override
     public Department saveAndFlush(Department department, UserInfoUtil userInfoUtil) {
         department.setId(null); // restablece el id tras aplicar el permiso CREATE en la ACL
         Department newDepartment = departmentRepository.saveAndFlush(department);
-
-        for (Employee employee : department.getEmployees())
-            if (this.employeeRepository.findById(employee.getId()).isPresent()) {
-                Employee reasignedEmployee = this.employeeRepository.findById(employee.getId()).get();
-                reasignedEmployee.setDepartment(newDepartment);
-                this.employeeRepository.saveAndFlush(reasignedEmployee);
-            }
 
         // access control
         ObjectIdentity objectIdentity = new ObjectIdentityImpl(newDepartment.getClass().getName(), department.getId());

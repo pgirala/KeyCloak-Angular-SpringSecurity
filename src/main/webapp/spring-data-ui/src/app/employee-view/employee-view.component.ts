@@ -40,6 +40,13 @@ export class EmployeeViewComponent implements OnInit
                     "input": true
                 },
                 {
+                    "label": "EmployeeId",
+                    "tableView": true,
+                    "key": "employeeId",
+                    "type": "textfield",
+                    "input": true
+                },
+                {
                     "label": "First name",
                     "tableView": true,
                     "key": "firstName",
@@ -47,11 +54,25 @@ export class EmployeeViewComponent implements OnInit
                     "input": true
                 },
                 {
-                    "label": "Location",
-                    "tableView": true,
-                    "key": "location",
-                    "type": "textfield",
-                    "input": true
+                  "label": "Last name",
+                  "tableView": true,
+                  "key": "lastName",
+                  "type": "textfield",
+                  "input": true
+                },
+                {
+                  "label": "Phone",
+                  "tableView": true,
+                  "key": "phone",
+                  "type": "textfield",
+                  "input": true
+                },
+                {
+                  "label": "Location",
+                  "tableView": true,
+                  "key": "location",
+                  "type": "textfield",
+                  "input": true
                 },
                 {
                     "label": "Salary",
@@ -109,7 +130,10 @@ export class EmployeeViewComponent implements OnInit
   private fromData2View(data:any)
   {
     let result = '{"id":' + data.id + ', '
+              + '"employeeId":"' + data.employeeId + '", '
               + '"firstName":"' + data.firstName + '", '
+              + '"lastName":"' + data.lastName + '", '
+              + '"phone":"' + data.phone + '", '
               + '"location":"' + data.location + '", '
               + '"salary":"' + data.salary + '"}'
     return result
@@ -119,7 +143,10 @@ export class EmployeeViewComponent implements OnInit
   {
     let employee = new Employee();
     employee.id = dataView.id;
+    employee.employeeId = dataView.employeeId;
     employee.firstName = dataView.firstName;
+    employee.lastName = dataView.lastName;
+    employee.phone = dataView.phone;
     employee.location = dataView.location;
     employee.salary = dataView.salary;
     return employee;

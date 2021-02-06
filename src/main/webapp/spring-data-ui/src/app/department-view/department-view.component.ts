@@ -45,33 +45,6 @@ export class DepartmentViewComponent implements OnInit
                     "key": "name",
                     "type": "textfield",
                     "input": true
-                },
-                {
-                  "label": "Employees",
-                  "widget": "choicesjs",
-                  "uniqueOptions": true,
-                  "tableView": true,
-                  "multiple": true,
-                  "dataSrc": "url",
-                  "data": {
-                    "url": "http://localhost:8010/proxy/api/v1/employee/list",
-                    "headers": [
-                      {
-                        "key": "Authorization",
-                        "value": "{{ data.token }}"
-                      }
-                    ]
-                  },
-                  "valueProperty": "id",
-                  "template": "<span>{{ item.firstName }} {{ item.lastName }}</span>",
-                  "selectThreshold": 0.3,
-                  "key": "employees",
-                  "type": "select",
-                  "indexeddb": {
-                    "filter": {}
-                  },
-                  "uniqueValues": true,
-                  "input": true
                 }
             ]
         },
@@ -121,17 +94,8 @@ export class DepartmentViewComponent implements OnInit
 
   private fromData2View(data:any)
   {
-    let result = '{"id":' + data.id + ', '
-              + '"name":"' + data.name + '", '
-              + '"employees":[';
-    let ids = '';
-    data.employees.forEach(function (value) {
-      ids = ids + value.id + ","
-    });
-    if (ids.length > 0)
-      ids = ids.substring(0, ids.length - 1)
-    result = result + ids + ']}'
-    return result
+    return '{"id":' + data.id + ', '
+              + '"name":"' + data.name + '"}';
   }
 
   private fromView2Data(dataView:any)
@@ -139,12 +103,6 @@ export class DepartmentViewComponent implements OnInit
     let department = new Department();
     department.id = dataView.id;
     department.name = dataView.name;
-    department.employees = new Array();
-    dataView.employees.forEach(function (value) {
-      let employee = new Employee();
-      employee.id = value;
-      department.employees.push(employee);
-    })
     return department;
   }
 

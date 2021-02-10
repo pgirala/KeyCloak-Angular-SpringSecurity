@@ -106,6 +106,7 @@ export class EmployeeViewComponent implements OnInit
                   },
                   "valueProperty": "id",
                   "template": "<span>{{ item.name }}</span>",
+                  "refreshOn": "id",
                   "selectThreshold": 0.3,
                   "key": "department",
                   "type": "select",
